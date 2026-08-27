@@ -1,0 +1,36 @@
+.DS_Store
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Credentials and local configuration
+.env
+.env.*
+!.env.example
+config/models.yaml
+
+# Raw or provider-derived generations are local until reviewed for release.
+data/raw/*
+!data/raw/.gitkeep
+data/interim/*
+!data/interim/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+
+# Course originals are local-only in this public repository.
+course_materials/
+Vorlesungenslides/
+llm_corpus/raw/
+llm_corpus/raw_assignments/
+llm_corpus/solutions/
+*.pdf
+
+# Generated figures and logs
+figures/*.png
+figures/*.pdf
+logs/

@@ -1,0 +1,24 @@
+project_title: Linguistic Fingerprints across LLM Generations
+language: en  # Working assumption; freeze before main collection.
+target_words:
+  min: 120
+  max: 150
+prompt_count_target: 100
+responses_per_prompt_model: 1
+random_seed: 42
+spacy_model: en_core_web_sm
+generation:
+  temperature: 0
+  top_p: 1
+  system_prompt: >-
+    Follow the user's writing instruction. Produce only the requested text,
+    without discussing the instruction or identifying yourself.
+analysis:
+  grouping_key: prompt_id
+  primary_classifier: logistic_regression
+  cv_folds: 5
+  primary_metrics:
+    - balanced_accuracy
+    - macro_f1
+    - roc_auc
+status: draft_not_frozen

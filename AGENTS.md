@@ -1,0 +1,118 @@
+# AGENTS.md — Linguistic Fingerprints
+
+Read this file before changing the project. It is the authoritative guide for LLMs and coding agents.
+
+## 1. Mandatory read order
+
+1. `AGENTS.md`
+2. `PROJECT_PLAN.md`
+3. `reports/PREP_STATUS.md`
+4. `reports/CHANGELOG_RUNS.md`
+5. `reports/MISTAKES.md`
+6. Only then open the files needed for the current task.
+
+For course questions, begin at `llm_corpus/INDEX.md`, open only the relevant lecture or assignment Markdown, and cite the YAML `source_pdf` plus the nearest `<!-- page:N -->` marker.
+
+## 2. Locked scientific framing
+
+This is a controlled corpus-linguistic study of linguistic profiles in selected earlier and later versions of matched LLM families.
+
+It is **not**:
+
+- a general old-versus-new model leaderboard;
+- a test of factual correctness, intelligence, or overall writing quality;
+- a detector intended to identify arbitrary AI-generated text;
+- evidence about all model generations from four selected models.
+
+Primary question:
+
+> Do earlier and later versions of matched LLM families exhibit distinguishable linguistic profiles under controlled prompting?
+
+The main scientific object is the interpretable linguistic feature profile. Classification is an evidential tool, not the end goal.
+
+## 3. Experimental unit and identifiers
+
+The experimental unit is one generated response to one registered prompt by one exact model version.
+
+Required keys:
+
+- `prompt_id`: stable ID for a prompt;
+- `model_id`: stable project ID;
+- `family`: matched model family;
+- `generation`: `earlier` or `later` within that family;
+- `run_id`: unique generation-run ID.
+
+Never use display names alone as provenance. Preserve provider/model identifiers, revision or digest when available, access date, system prompt, decoding settings, and raw response.
+
+## 4. Hard validity constraints
+
+1. Every model receives the exact same registered prompt text.
+2. Freeze the system prompt and generation configuration before the main run.
+3. Keep requested output length identical. Record actual length; do not silently truncate.
+4. Raw generations are immutable. Corrections create a new `run_id` and retain the failed run.
+5. Use the same linguistic pipeline and model version for all texts.
+6. Use normalized rates for count features where appropriate.
+7. Prefer MATTR/MTLD-style diversity measures; raw TTR is descriptive only.
+8. Standardize numeric features before PCA, distance-based clustering, linear SVM, or regularized regression.
+9. Fit scalers, imputers, feature selection, and PCA inside training folds for predictive evaluation.
+10. Cross-validation must be grouped by `prompt_id`. A prompt may never cross the train/test boundary.
+11. Report uncertainty and effect sizes, not only p-values or accuracy.
+12. Treat PCA and clustering as exploratory. Inspect loadings and stability before interpretation.
+13. Set and log random seeds for every stochastic procedure.
+14. Do not claim a universal generation effect from the selected models.
+
+## 5. Analysis priority
+
+1. Data audit and descriptive summaries.
+2. Paired feature contrasts within prompt and model family.
+3. PCA for visualization, with scaling and loading inspection.
+4. Interpretable classification with prompt-blocked cross-validation.
+5. Clustering only as a secondary exploratory analysis with stability checks.
+
+Prefer a regularized logistic regression or linear SVM as the main classifier. A random forest may be a robustness check, but correlated feature importances must not be read causally.
+
+## 6. Scope decisions still requiring a freeze
+
+- exact model families and versions;
+- study language;
+- number of repeated generations per prompt/model;
+- final prompt bank;
+- final feature inventory;
+- primary inferential model.
+
+Do not start the main collection until these values are recorded in `config/study.yaml` and `config/models.yaml` and the pilot has passed.
+
+## 7. Data handling
+
+- `data/raw/`: append-only generations and provenance; never edit in place.
+- `data/interim/`: validated/reshaped data that can be regenerated.
+- `data/processed/`: feature tables and analysis-ready outputs that can be regenerated.
+- Never commit API keys, tokens, provider account data, or private prompts.
+- Generated corpora may be committed only after license, terms, privacy, and file-size checks.
+
+## 8. Reproducibility and run logging
+
+Every material run must append to `reports/CHANGELOG_RUNS.md`:
+
+- timestamp;
+- command or notebook;
+- input and output paths;
+- configuration hash or relevant settings;
+- seed;
+- result and anomalies.
+
+Do not erase failed attempts. Document why a run was superseded.
+
+## 9. Course proposal fidelity
+
+Major deviations from the approved proposal must be explicitly justified. Update the proposal, `PROJECT_PLAN.md`, and the run log together when the design changes.
+
+## 10. Do not
+
+- mix prompts across CV folds;
+- choose features after looking at test-set performance;
+- pool families without also showing family-specific contrasts;
+- interpret separation in a plot as proof of a stable effect;
+- describe model release date alone as a causal variable;
+- upload original course PDFs or official solutions to this public repository;
+- fabricate citations, model metadata, or missing results.

@@ -1,0 +1,117 @@
+[
+  {
+    "assignment": 1,
+    "title": "Token Frequencies in a First Jupyter Notebook",
+    "session": "01",
+    "data": ["sq-sample.txt"],
+    "solution": "datsci-ex01-solution.pdf",
+    "solution_md": "llm_corpus/solutions/ex01_solution.md",
+    "handed_out": "2026-04-23",
+    "due": "2026-05-07",
+    "llm_md": "llm_corpus/assignments/ex01.md",
+    "source_pdf": "assignment_01/datsci-ex01.pdf",
+    "pages": 1,
+    "folder": "assignment_01"
+  },
+  {
+    "assignment": 2,
+    "title": "Exploring Vocabulary Acquisition Data with NumPy and Seaborn",
+    "session": "02",
+    "data": ["Kuperman-BRM-data-2012.csv"],
+    "solution": null,
+    "handed_out": "2026-05-10",
+    "due": "2026-05-21",
+    "llm_md": "llm_corpus/assignments/ex02.md",
+    "source_pdf": "assignment_02/datsci-ex02.pdf",
+    "pages": 2,
+    "folder": "assignment_02"
+  },
+  {
+    "assignment": 3,
+    "title": "Linguistic Preprocessing of a Kafka Novel",
+    "session": "04",
+    "data": ["kafka_1925_der-prozess.txt", "kafka_1925_the-trial.txt"],
+    "solution": null,
+    "handed_out": "2026-05-30",
+    "due": "2026-06-11",
+    "llm_md": "llm_corpus/assignments/ex03.md",
+    "source_pdf": "assignment_03/datsci-ex03.pdf",
+    "pages": 2,
+    "folder": "assignment_03"
+  },
+  {
+    "assignment": 4,
+    "title": "Working with a Typological Database",
+    "session": "05",
+    "data": [],
+    "missing_data": [
+      "Grambank CLDF ZIP from https://zenodo.org/records/7844558 → languages.csv, parameters.csv, values.csv, codes.csv"
+    ],
+    "solution": null,
+    "handed_out": "2026-06-11",
+    "due": "2026-06-18",
+    "llm_md": "llm_corpus/assignments/ex04.md",
+    "source_pdf": "assignment_04/datsci-ex04.pdf",
+    "pages": 2,
+    "folder": "assignment_04"
+  },
+  {
+    "assignment": 5,
+    "title": "Exploring Lexical Retrieval",
+    "session": "06",
+    "data": [
+      "Tsang-2018-LexicalDecision.tsv",
+      "Mohammad-2018-AffectiveRatings.tsv",
+      "cmn-opensubtitles-freq.tsv"
+    ],
+    "solution": null,
+    "handed_out": "2026-06-18",
+    "due": "2026-06-25",
+    "llm_md": "llm_corpus/assignments/ex05.md",
+    "source_pdf": "assignment_05/datsci-ex05.pdf",
+    "pages": 2,
+    "folder": "assignment_05"
+  },
+  {
+    "assignment": 6,
+    "title": "Modeling Interactions Between Properties of Sound Systems",
+    "session": "07",
+    "data": ["languages.tsv", "forms.tsv"],
+    "notes": "PDF calls them languages.csv/forms.csv (TSV). Symlinks languages.csv → languages.tsv and forms.csv → forms.tsv provided.",
+    "solution": null,
+    "handed_out": "2026-06-25",
+    "due": "2026-07-02",
+    "llm_md": "llm_corpus/assignments/ex06.md",
+    "source_pdf": "assignment_06/datsci-ex06.pdf",
+    "pages": 2,
+    "folder": "assignment_06"
+  },
+  {
+    "assignment": 7,
+    "title": "Typological Differences Between Linguistic Areas",
+    "session": "08",
+    "data": ["grambank.csv"],
+    "solution": "datsci-ex07-solution.pdf",
+    "solution_md": "llm_corpus/solutions/ex07_solution.md",
+    "handed_out": "2026-07-02",
+    "due": "2026-07-09",
+    "llm_md": "llm_corpus/assignments/ex07.md",
+    "source_pdf": "assignment_07/datsci-ex07.pdf",
+    "pages": 2,
+    "folder": "assignment_07"
+  },
+  {
+    "assignment": 8,
+    "title": "Exploring an Unknown Language through Clustering",
+    "session": "09",
+    "data": ["cym-os-corpus.txt"],
+    "solution": "datsci-ex08-solution.pdf",
+    "solution_md": "llm_corpus/solutions/ex08_solution.md",
+    "handed_out": "2026-07-09",
+    "due": "2026-07-16",
+    "llm_md": "llm_corpus/assignments/ex08.md",
+    "source_pdf": "assignment_08/datsci-ex08.pdf",
+    "pages": 3,
+    "folder": "assignment_08"
+  }
+]

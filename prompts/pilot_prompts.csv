@@ -1,0 +1,21 @@
+prompt_id,version,task_type,topic,prompt_text,target_min_words,target_max_words,status
+EXP_001,1,explanation,climate_change,"Explain climate change to a curious teenager in clear prose. Write between 120 and 150 words.",120,150,pilot
+EXP_002,1,explanation,photosynthesis,"Explain photosynthesis to a curious teenager in clear prose. Write between 120 and 150 words.",120,150,pilot
+EXP_003,1,explanation,inflation,"Explain why inflation changes purchasing power to a general audience. Write between 120 and 150 words.",120,150,pilot
+EXP_004,1,explanation,memory,"Explain how human memory can be unreliable to a general audience. Write between 120 and 150 words.",120,150,pilot
+NAR_001,1,narrative,missed_train,"Write a short story about someone who misses an important train. Write between 120 and 150 words.",120,150,pilot
+NAR_002,1,narrative,lost_key,"Write a short story about a person who finds a key with no obvious lock. Write between 120 and 150 words.",120,150,pilot
+NAR_003,1,narrative,power_cut,"Write a short story set during an unexpected neighborhood power cut. Write between 120 and 150 words.",120,150,pilot
+NAR_004,1,narrative,old_letter,"Write a short story about an old letter arriving many years late. Write between 120 and 150 words.",120,150,pilot
+ARG_001,1,argumentation,remote_work,"Present a balanced argument in favor of remote work. Write between 120 and 150 words.",120,150,pilot
+ARG_002,1,argumentation,public_transport,"Argue that cities should invest more in public transport while acknowledging one drawback. Write between 120 and 150 words.",120,150,pilot
+ARG_003,1,argumentation,school_start,"Argue for later school starting times while acknowledging one drawback. Write between 120 and 150 words.",120,150,pilot
+ARG_004,1,argumentation,urban_trees,"Argue that cities should plant more trees while acknowledging one drawback. Write between 120 and 150 words.",120,150,pilot
+ADV_001,1,advice,study_plan,"Give practical advice to a student creating a realistic weekly study plan. Write between 120 and 150 words.",120,150,pilot
+ADV_002,1,advice,difficult_conversation,"Give practical advice for preparing for a difficult but respectful conversation. Write between 120 and 150 words.",120,150,pilot
+ADV_003,1,advice,digital_files,"Explain how to organize a cluttered collection of digital files. Write between 120 and 150 words.",120,150,pilot
+ADV_004,1,advice,new_city,"Give practical advice to someone spending their first week in a new city. Write between 120 and 150 words.",120,150,pilot
+REF_001,1,reflection,difficult_decision,"Describe the experience of making a difficult decision without using a specific real person. Write between 120 and 150 words.",120,150,pilot
+REF_002,1,reflection,quiet_place,"Describe why a quiet public place can matter to a community. Write between 120 and 150 words.",120,150,pilot
+REF_003,1,reflection,changing_mind,"Reflect on why changing one's mind can be difficult but valuable. Write between 120 and 150 words.",120,150,pilot
+REF_004,1,reflection,waiting,"Describe how waiting can change a person's perception of time. Write between 120 and 150 words.",120,150,pilot

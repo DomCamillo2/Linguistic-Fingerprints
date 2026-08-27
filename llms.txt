@@ -1,0 +1,11 @@
+# LLM entry point
+
+Primary instructions: `AGENTS.md`
+Research design: `PROJECT_PLAN.md`
+Live checklist: `reports/PREP_STATUS.md`
+Run history: `reports/CHANGELOG_RUNS.md`
+Known pitfalls: `reports/MISTAKES.md`
+Course corpus: `llm_corpus/INDEX.md`
+
+Core rule: all models receive identical prompts; all predictive evaluation is grouped by `prompt_id`.
+Core claim limit: results concern the selected versions and prompts, not all LLM generations.

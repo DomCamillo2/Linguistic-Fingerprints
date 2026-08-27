@@ -1,0 +1,35 @@
+# Copy to config/models.yaml only after verifying exact provider identifiers,
+# revisions/digests, size class, instruction-tuning status, and access method.
+models:
+  - model_id: family_a_earlier
+    family: TBD_family_A
+    generation: earlier
+    provider: TBD
+    provider_model_id: TBD
+    revision_or_digest: TBD
+    size_class: TBD
+    instruction_variant: TBD
+  - model_id: family_a_later
+    family: TBD_family_A
+    generation: later
+    provider: TBD
+    provider_model_id: TBD
+    revision_or_digest: TBD
+    size_class: TBD
+    instruction_variant: TBD
+  - model_id: family_b_earlier
+    family: TBD_family_B
+    generation: earlier
+    provider: TBD
+    provider_model_id: TBD
+    revision_or_digest: TBD
+    size_class: TBD
+    instruction_variant: TBD
+  - model_id: family_b_later
+    family: TBD_family_B
+    generation: later
+    provider: TBD
+    provider_model_id: TBD
+    revision_or_digest: TBD
+    size_class: TBD
+    instruction_variant: TBD
