@@ -2,168 +2,180 @@
 
 ## Working title
 
-**Linguistic Fingerprints across LLM Generations**
+**Generalising Linguistic Fingerprints across LLM Families and Genres**
 
-## Research question
+## Research question and contribution
 
-Do earlier and later versions of matched LLM families exhibit distinguishable linguistic profiles under controlled prompting?
+> To what extent do linguistically interpretable predecessor-successor differences generalise across open-weight model families and text genres?
 
-## Operational definition
+The study no longer treats mere separability of earlier and later models as the contribution. Prior work already compares Llama 2 and Llama 3 under matched prompts with interpretable stylometry and topic-grouped cross-validation. The remaining gap is narrower: whether predecessor-successor signals transfer across open-weight families and unseen writing-task types under one compact, prespecified feature inventory.
 
-“Generation” means the earlier/later relation between two documented versions inside the same model family. It does not mean a universal historical era shared by all LLMs.
+The two primary generalisation targets are:
 
-Proposal-level design:
+1. **Cross-genre:** train on four writing-task types and evaluate on the fifth, separately within Llama and Gemma.
+2. **Cross-family:** train an earlier-versus-later classifier on Llama and evaluate it on Gemma, then reverse the direction.
+
+A stricter robustness analysis combines cross-family transfer with unseen prompts. Within-family prompt-blocked classification is retained only as a baseline.
+
+## Operational definition and claim boundary
+
+“Generation” is shorthand for the documented predecessor-successor relation between two selected versions inside a family:
 
 ```text
 Llama: Llama 2 7B Chat → Llama 3.1 8B Instruct
 Gemma: Gemma 2 9B Instruction Tuned → Gemma 3 12B Instruction Tuned
 ```
 
-The family-matched design helps distinguish an earlier/later contrast from a pure provider or family contrast. With two families, replication across families remains limited and all conclusions must be cautious.
+The estimand is a difference **associated with** these version transitions under the recorded runtime. It is not a causal effect of newer training: architecture, tokenizer, data, parameter count, post-training, alignment, and native chat templates also change. With two families, a shared direction is a replicated pattern in these pairs, not a universal LLM generation effect.
 
 ## Hypotheses
 
-- **H1 — Feature differences:** selected earlier and later versions differ in at least some predefined lexical, morphosyntactic, or stylistic features after controlling for prompt and family.
-- **H2 — Cross-family consistency:** a subset of feature directions is consistent across both matched families.
-- **H3 — Multivariate profile:** standardized feature vectors show partial earlier/later structure in PCA, without assuming that principal components are directly linguistic.
-- **H4 — Out-of-prompt prediction:** an interpretable classifier predicts earlier/later labels above a balanced baseline on unseen prompts.
+- **H1 — Interpretable predecessor-successor contrasts:** at least one prespecified feature differs within at least one family after paired inference and false-discovery-rate correction.
+- **H2 — Cross-family directional replication:** a prespecified subset of feature directions agrees between Llama and Gemma. Effect estimates and uncertainty, not a binary sign count alone, determine interpretation.
+- **H3 — Cross-genre generalisation:** the fixed L2-logistic pipeline retains above-baseline balanced accuracy when each writing-task type is held out in turn, reported separately by family.
+- **H4 — Cross-family transfer:** a classifier trained on one family transfers above baseline to the other family in both directions. The cross-family/unseen-prompt variant is the stronger robustness test.
 
-H4 is supported only by prompt-blocked evaluation. A classifier that sees the same prompt in training and testing is invalid for this study.
+PCA and clustering are exploratory and are not hypotheses. A result where H1 is supported but H3/H4 are not is substantively important: it indicates version-specific fingerprints without a transferable generation-associated pattern.
 
 ## Study matrix
 
 | Factor | Levels/role |
 |---|---|
-| `family` | 2 matched model families; blocking/moderating factor |
-| `generation` | earlier/later; primary explanatory variable |
-| `model_id` | 4 exact versions; nested in family × generation |
-| `prompt_id` | 100 prompts; repeated-measures block |
-| `task_type` | balanced prompt genre; stratification variable |
-| response | one deterministic generated text per cell |
+| `family` | Llama, Gemma; transfer domain and fixed moderator |
+| `generation` | earlier/later within family; prediction target |
+| `model_id` | four exact versions; nested in family × generation |
+| `prompt_id` | 100 registered prompts; repeated-measures group |
+| `task_type` | five writing-task types; cross-genre holdout domain |
+| response | one deterministic text per prompt/model cell |
 
-Main corpus: 100 prompts × 4 models = 400 texts.
+Main corpus: 100 prompts × 4 models = 400 texts. Every task type contains 20 prompts. One deterministic generation does not estimate decoding variance; this remains an explicit scope limitation.
 
 ## Prompt design
 
-Prompts are balanced across five task types, with 20 prompts each:
+The prompt bank is balanced across explanation, narrative, argumentation, advice/instructions, and reflection/description. Each prompt must:
 
-1. explanation;
-2. narrative;
-3. argumentation;
-4. advice/instructions;
-5. reflection/description.
-
-Each prompt must:
-
-- request the same target word range;
-- avoid mentioning model identity or generation;
+- request the same 120–150-word range;
+- avoid model identity or generation cues;
 - be answerable without browsing;
 - avoid sensitive personal data;
-- have a stable `prompt_id` and version;
-- be piloted for refusal and formatting artifacts.
+- have a stable `prompt_id`, version, and task type;
+- be sent unchanged to every model;
+- pass pilot checks for refusals, formatting artifacts, and sufficient valid pairs.
+
+The prompt instruction does not itself control actual length. Actual word count is audited, feature rates are normalised where appropriate, and the primary conclusions require length-aware sensitivity analyses.
 
 ## Feature inventory
 
-The 30 proposal-level confirmatory features are listed in the proposal and implemented in `src/linguistic_fingerprints/features.py`. They become the main-run freeze after the pilot and code audit. Groups:
+The 30 confirmatory features are defined once in `src/linguistic_fingerprints/features.py` as `CONFIRMATORY_FEATURES`. They cover:
 
-### Lexical
+- lexical diversity and repetition;
+- mean word and sentence length plus sentence-length variation;
+- function words, modals, connectives, punctuation, and contractions;
+- paragraph/list/heading structure and adjacent-sentence overlap;
+- 13 UPOS proportions.
 
-- mean token length;
-- lemma/type counts;
-- MATTR;
-- frequency of selected function words;
-- normalized repeated-token and repeated-bigram rates;
-- normalized modal and connective rates.
-
-### Morphosyntactic
-
-- UPOS proportions;
-- mean and standard deviation of sentence length;
-- pronoun, auxiliary, conjunction, adjective, and adverb rates;
-- optional dependency-relation proportions after a reliability check.
-
-### Stylistic/structural
-
-- paragraph count;
-- punctuation rates;
-- sentence-initial connective rate;
-- list/heading/markdown markers;
-- contraction rate for English;
-- lexical overlap between adjacent sentences.
-
-All measures must have a transparent definition and be computed identically for every model.
+`n_surface_tokens`, `n_words`, and raw TTR are audit-only variables. No confirmatory feature may be selected or removed after viewing target-family or held-out-task performance. All measures use the same pinned linguistic pipeline for all models.
 
 ## Analysis plan
 
-### A. Audit and aggregation
+### A. Audit and paired description
 
-- confirm complete prompt × model coverage;
-- report refusals, failures, and actual length distributions;
-- summarize features by generation, model, family, and task type;
-- visualize paired earlier/later differences per prompt.
+- confirm complete prompt × model coverage and exact provenance;
+- report failures, refusals, formatting problems, and actual length distributions;
+- manually audit a stratified annotation sample;
+- calculate `later − earlier` for every prompt, feature, and family;
+- report family-specific means, standardized paired effects, and 95% prompt-bootstrap intervals;
+- use two-sided paired permutation tests and Benjamini-Hochberg correction across the 60 feature/family tests at `q=0.05`;
+- summarize cross-family sign concordance with effect intervals visible.
 
-### B. Primary inference
+These analyses establish what changes. They do not by themselves establish generalisation.
 
-For each of the 30 features and two families, compute the within-prompt contrast `later − earlier`. Report the mean paired difference, a standardized paired effect, and a 95% percentile interval from 10,000 prompt bootstrap resamples with seed 42. Use two-sided paired permutation tests and Benjamini–Hochberg correction across the 60 confirmatory feature/family tests at `q=0.05`.
+### B. Cross-genre generalisation — primary
 
-### C. PCA
+For each family and each of the five task types:
 
-- standardize features;
-- report explained variance;
-- inspect loadings;
-- color by generation and shape/facet by family and task type;
-- do not treat visual separation as inferential proof.
+1. train the fixed L2-logistic pipeline on the other four task types;
+2. fit median imputation and standardisation on training rows only;
+3. test on every response in the held-out task type;
+4. report balanced accuracy, macro-F1, ROC-AUC, confusion counts, and uncertainty;
+5. report all family × held-out-task cells, not only an average.
 
-### D. Classification
+The macro-summary across held-out task types is secondary to the complete cell table. The held-out task type must not influence feature selection, preprocessing, or thresholds.
 
-Primary model: L2-regularized logistic regression (`C=1`) in a scikit-learn pipeline.
+### C. Cross-family transfer — primary
 
-- outer evaluation: five-fold `StratifiedGroupKFold`, groups=`prompt_id`;
-- preprocessing fitted within folds;
-- report balanced accuracy, macro-F1, ROC-AUC where appropriate, and fold uncertainty;
-- compare against a dummy baseline;
-- inspect stable standardized coefficients/permutation importance;
-- optionally test whether directions generalize across families, clearly marked as low-powered.
+Fit the same fixed pipeline in both directions:
 
-### E. Clustering
+- all Llama responses → all Gemma responses;
+- all Gemma responses → all Llama responses.
 
-Exploratory only. Compare multiple seeds/algorithms and report silhouette/stability. Cluster composition by generation is descriptive and does not prove a generation effect.
+The matched prompt bank is label-balanced inside every family, so direct transfer targets family shift rather than ordinary prompt shift. Both directions are required; a mean may not replace them. Coefficient signs and predictive behavior are compared with the paired feature results.
+
+### D. Cross-family transfer to unseen prompts — robustness
+
+Use five prompt-grouped folds. For each direction, fit on source-family responses from four prompt folds and test on target-family responses whose `prompt_id` values are in the held-out fold. Thus both family and prompt change at test time. This is the strongest planned evidence but is expected to have wider uncertainty.
+
+### E. Supporting baselines and sensitivity analyses
+
+- prompt-blocked five-fold within-family classification;
+- a stratified dummy classifier evaluated on identical splits;
+- length-aware variants adding actual word count as an explicit covariate and using a preregistered length-matched subset;
+- performance by task type and length-compliance status;
+- optional linear SVM as a labeled robustness model without retuning on target domains.
+
+### F. PCA and clustering
+
+PCA is used only for scaled visualisation with explained variance and loadings. Clustering is optional and exploratory, uses multiple seeds, and reports stability. Neither visual separation nor cluster composition is evidence of transfer.
+
+## Evaluation implementation
+
+`scripts/evaluate_generalization.py` runs the preregistered transfer protocols and baseline implemented in `src/linguistic_fingerprints/generalization.py`:
+
+- `leave_one_task_type_out`;
+- `cross_family_transfer`;
+- `cross_family_unseen_prompt`;
+- `prompt_blocked_within_family`.
+
+The classifier is an L2-regularized logistic regression with `C=1` in a pipeline containing median imputation and standardisation. The configuration in `config/study.yaml` is authoritative. Any analysis-code change after the pilot freeze must be logged and rerun from raw immutable data.
 
 ## Confounds and mitigations
 
 | Threat | Mitigation |
 |---|---|
-| Family/provider effects | matched earlier/later versions within each family; family-specific results |
-| Model size | match parameter class where possible; document differences |
-| Instruction-tuning differences | compare equivalent chat/instruct variants |
-| Prompt topic/genre | every model receives every prompt; balance task types |
-| Prompt leakage | group all identical `prompt_id` responses into one CV fold |
-| Output length | identical requested range; normalized features; length audit |
-| Decoding/interface | freeze and record system prompt and settings |
-| NLP measurement bias | same pipeline for all texts; manual audit of a small stratified sample |
-| Researcher degrees of freedom | freeze prompt registry, feature list, and primary analysis after pilot |
+| Family/provider fingerprints | bidirectional cross-family transfer; family-specific paired results |
+| Task/genre shortcuts | leave-one-task-type-out evaluation |
+| Prompt/topic leakage | prompt grouping; strict cross-family/unseen-prompt robustness test |
+| Output length | actual-length audit, normalised rates, covariate and length-matched sensitivity analyses |
+| Model size and architecture | document differences; avoid causal age claims |
+| Instruction/chat-template differences | exact template provenance; describe deployed-version contrasts |
+| NLP measurement bias | one pinned pipeline plus stratified manual audit |
+| Researcher degrees of freedom | freeze prompt registry, features, splits, metrics, and seed before main collection |
+| Only two families | report pair-specific evidence and avoid universal claims |
+| One response per cell | deterministic reproducibility; acknowledge unestimated decoding variance |
 
 ## Decision gates
 
-### Gate 1 — model feasibility
+### Gate 1 — supervisor and model feasibility
 
-Install and load all four exact tags from `config/models.yaml`; capture the local Ollama version and full runtime digests. Proposal-level public manifests have been verified, but local installation remains pending.
+Obtain approval for the reframed objective. Install all four exact tags in `config/models.yaml`; capture the Ollama version and full runtime digests.
 
 ### Gate 2 — pilot
 
-At least 20 prompts run successfully across all four models; failure/refusal rate and length compliance are acceptable; metadata capture is complete.
+Run all four models on the registered pilot. Verify failure/refusal rate, length behavior, metadata, annotation quality, and sufficient valid earlier/later pairs in every task type.
 
 ### Gate 3 — analysis freeze
 
-Prompt registry, feature list, transformations, primary contrasts, CV groups, metrics, and seeds are recorded before the main run.
+Freeze the 100-prompt registry, feature list, transformations, paired tests, transfer protocols, folds, metrics, length sensitivities, and seeds before the main run.
 
 ## Definition of done
 
-- reproducible 4-model controlled corpus;
-- validated feature table;
-- descriptive and paired group analyses;
-- PCA with loadings and caveats;
-- prompt-blocked classification with baseline and uncertainty;
-- optional stable clustering analysis;
-- notebook/report answering H1–H4 and documenting limitations;
-- pinned environment, immutable configurations, and complete run log.
+- reproducible four-model controlled corpus with immutable provenance;
+- validated 30-feature analysis table and length audit;
+- paired family-specific feature contrasts with uncertainty;
+- complete leave-one-task-type-out results per family;
+- Llama → Gemma and Gemma → Llama transfer results;
+- cross-family/unseen-prompt robustness results;
+- prompt-blocked and dummy baselines;
+- length-aware sensitivity analyses;
+- carefully bounded conclusion: transferable pattern, family-specific fingerprints, or insufficient evidence;
+- pinned environment, configuration freeze, tests, and complete run log.

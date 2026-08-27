@@ -7,5 +7,5 @@ Run history: `reports/CHANGELOG_RUNS.md`
 Known pitfalls: `reports/MISTAKES.md`
 Course corpus: `llm_corpus/INDEX.md`
 
-Core rule: all models receive identical prompts; all predictive evaluation is grouped by `prompt_id`.
-Core claim limit: results concern the selected versions and prompts, not all LLM generations.
+Core rule: all models receive identical prompts. Ordinary CV is grouped by `prompt_id`; cross-genre evaluation withholds a complete `task_type`; cross-family transfer is run in both directions and includes an unseen-prompt robustness test.
+Core claim limit: results concern transfer between the selected version pairs and genres, not a universal LLM generation effect.

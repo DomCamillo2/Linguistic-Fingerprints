@@ -20,6 +20,8 @@ REQUIRED_PATHS = [
     "literature/references.bib",
     "prompts/pilot_prompts.csv",
     "data/README.md",
+    "src/linguistic_fingerprints/generalization.py",
+    "scripts/evaluate_generalization.py",
     "reports/PREP_STATUS.md",
     "reports/CHANGELOG_RUNS.md",
     "reports/MISTAKES.md",
@@ -60,6 +62,18 @@ def main() -> None:
             errors.append(f"expected 4 configured models, found {model_count}")
         if "TBD" in models_text:
             errors.append("config/models.yaml still contains TBD placeholders")
+
+    study_path = ROOT / "config" / "study.yaml"
+    if study_path.is_file():
+        study_text = study_path.read_text(encoding="utf-8")
+        required_protocols = {
+            "cross_genre:",
+            "cross_family:",
+            "cross_family_unseen_prompt:",
+        }
+        missing_protocols = sorted(protocol for protocol in required_protocols if protocol not in study_text)
+        if missing_protocols:
+            errors.append(f"missing generalization protocols: {missing_protocols}")
 
     proposal_path = ROOT / "proposal" / "PROPOSAL_DRAFT.md"
     if proposal_path.is_file() and "TBD" in proposal_path.read_text(encoding="utf-8"):

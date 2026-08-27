@@ -36,4 +36,12 @@ Do not modify a row after collection. A retry receives a new `run_id`.
 
 ## Split rule
 
-All responses sharing a `prompt_id` must be assigned to the same train/test fold. Never create random row-level splits.
+Ordinary within-family evaluation assigns all responses sharing a `prompt_id` to the same train/test fold. Never create random row-level splits.
+
+The primary generalisation protocols add stronger domain boundaries:
+
+- cross-genre: hold out the complete `task_type`;
+- cross-family: train on one complete family and test on the other, in both directions;
+- strict robustness: train on source-family prompt folds and test on the target family with held-out `prompt_id` values.
+
+Fit imputation, scaling, feature selection, and any model tuning on training-domain rows only.

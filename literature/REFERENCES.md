@@ -4,13 +4,39 @@ Last verified: 2026-08-27. Prefer the DOI/official page below over secondary des
 
 ## Core research literature
 
-### Direct predecessor study
+### Closest matched-prompt predecessor study
+
+**Przystalski, K., Argasiński, J. K., Grabska-Gradzińska, I., & Ochab, J. K. (2026).** “Stylometry recognizes human and LLM-generated texts in short samples.” *Expert Systems with Applications, 296*, 129001. [DOI](https://doi.org/10.1016/j.eswa.2025.129001) · [arXiv](https://arxiv.org/abs/2507.00838)
+
+- Includes a direct Llama 2 7B versus Llama 3 8B comparison over the same Wikipedia-topic bank and two shared prompt templates.
+- Uses 195 interpretable StyloMetrix features and a roughly 3,000-dimensional frequency pipeline with decision trees/LightGBM.
+- Uses 10-fold group cross-validation so the same topic does not occur in train and test; the post-cleaning classification corpus contains 2,424 topics.
+- This invalidates any claim that matched prompts, interpretable features, topic grouping, or direct earlier/later Llama classification are individually novel here.
+- Our incremental gap is narrower: a compact prespecified 30-feature inventory, heterogeneous writing-task types, a second open-weight predecessor-successor family, and explicit cross-genre/cross-family transfer.
+
+### Other generation and update studies
 
 **Gude, A., Santos-Rios, R., Bond, F., Flickinger, D., Gómez-Rodríguez, C., & Zamaraeva, O. (2026).** “More Aligned, Less Diverse? Analyzing the Grammar and Lexicon of Two Generations of LLMs.” ACL 2026. [DOI](https://doi.org/10.18653/v1/2026.acl-long.1803) · [ACL Anthology](https://aclanthology.org/2026.acl-long.1803/)
 
 - Compares older base models with newer instruction-tuned systems in English news leads.
 - Reports lower syntactic and especially lexical diversity in the newer group.
-- Motivates our replication while creating a clear gap: our models are instruction/chat tuned on both sides, matched within family, and tested across five task types.
+- Motivates family-matched replication, but model generation, tuning regime, data source, and cohort composition partially overlap.
+
+**Huynh, L., & McNamara, D. S. (2026).** “Evaluation of Linguistic Consistency of LLM-Generated Text Personalization Using Natural Language Processing.” *Electronics, 15*(6), 1262. [DOI](https://doi.org/10.3390/electronics15061262) · [Article](https://www.mdpi.com/2079-9292/15/6/1262)
+
+- Uses identical personalization tasks/prompts and NLP measures of cohesion, lexical sophistication, syntax, and language variety.
+- Compares GPT-4o at two deployment dates and GPT-4.1, showing that controlled linguistic change across updates has already been studied.
+- Does not perform interpretable earlier/later source-model classification or open-weight cross-family transfer.
+
+**Rudnicka, K., & Juzek, T. S. (2026).** “Beyond ‘AI Language’: The case for the idiolectal nature of LLM output.” arXiv preprint. [arXiv](https://arxiv.org/abs/2608.06589)
+
+- Compares 2024 and 2026 model cohorts on the same societal-topic prompts with computational descriptors and stylometric PCA.
+- Reports both cohort-level change and distinct model-specific profiles.
+- This is a recent preprint and does not supply the preregistered bidirectional cross-family transfer design proposed here.
+
+### Defensible research gap
+
+Previous work has already established model-specific linguistic signals and controlled changes across versions or updates. It remains underexplored whether predecessor-successor differences replicate across open-weight families and heterogeneous text genres under a unified design, and whether a classifier trained on one family transfers to another using a small prespecified set of interpretable features. This repository tests that incremental gap; it does not claim the first linguistic comparison of model generations.
 
 ### Linguistic profiles and model attribution
 
@@ -76,4 +102,3 @@ For project-method claims, use the page-indexed local course corpus:
 - PCA and scaling limitations: `llm_corpus/lectures/10_pattern_extraction.md`;
 - inference and bootstrap: `llm_corpus/lectures/11_statistical_inference.md`;
 - proposal requirements and scope: `llm_corpus/lectures/12_data_science_projects.md`.
-
