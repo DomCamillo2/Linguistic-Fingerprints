@@ -69,16 +69,20 @@ Never use display names alone as provenance. Preserve provider/model identifiers
 4. Interpretable classification with prompt-blocked cross-validation.
 5. Clustering only as a secondary exploratory analysis with stability checks.
 
-Prefer a regularized logistic regression or linear SVM as the main classifier. A random forest may be a robustness check, but correlated feature importances must not be read causally.
+Use the preregistered L2-regularized logistic regression as the main classifier. A linear SVM or random forest may be a clearly labeled robustness check, but correlated feature importances must not be read causally.
 
-## 6. Scope decisions still requiring a freeze
+## 6. Proposal-level decisions and remaining freeze
 
-- exact model families and versions;
-- study language;
-- number of repeated generations per prompt/model;
-- final prompt bank;
-- final feature inventory;
-- primary inferential model.
+Recorded in `config/study.yaml` and `config/models.yaml`:
+
+- exact Llama and Gemma versions;
+- English as the sole study language;
+- one deterministic generation per prompt/model;
+- 100 prompts, split equally across five task types;
+- 30 confirmatory features;
+- paired bootstrap/permutation inference and prompt-blocked logistic regression.
+
+Still pending are supervisor approval, installation verification, completion of the 100-prompt bank, the four-model pilot, and the post-pilot main-run freeze.
 
 Do not start the main collection until these values are recorded in `config/study.yaml` and `config/models.yaml` and the pilot has passed.
 

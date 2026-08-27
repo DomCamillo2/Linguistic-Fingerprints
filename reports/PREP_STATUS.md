@@ -13,20 +13,22 @@ Last updated: 2026-08-27
 - [x] Searchable course lecture/assignment Markdown copied into the repository.
 - [x] Initial feature extraction and schema validation code added.
 - [x] Basic tests and CI configuration added.
+- [x] Preliminary literature review completed with verified primary sources.
+- [x] Closest prior study identified and replication/extension gap defined.
+- [x] Two matched families and four exact proposal-level Ollama tags selected.
+- [x] English, 100 prompts, 120–150 words, and one deterministic response per cell selected.
+- [x] Thirty confirmatory features and the primary inferential/classification procedures specified.
+- [x] Local feasibility checked on a 24-GB Apple M4 Pro; public Ollama manifests recorded.
 
 ## Must be completed before the proposal/main run
 
 - [ ] Get supervisor approval for the topic change.
-- [ ] Complete the verified literature review.
-- [ ] Select two matched model families and four exact versions.
-- [ ] Verify access, model identifiers, instruction variants, and comparable size.
-- [ ] Confirm the sole study language.
-- [ ] Complete and review the 100–120 prompt bank.
-- [ ] Decide whether to generate repeated samples.
+- [ ] Install all four exact model tags and capture full local runtime digests.
+- [ ] Complete and review the 100-prompt bank.
 - [ ] Run the 20-prompt pilot across all four models.
 - [ ] Audit length compliance, failures, refusals, and metadata.
-- [ ] Freeze `config/study.yaml`, `config/models.yaml`, prompts, features, and primary statistics.
+- [ ] Confirm or revise the proposal-level configuration after the pilot and record the main-run freeze.
 
 ## Current bottleneck
 
-Exact model pairs and reproducible access have not been selected. The main corpus must not be generated until this decision is resolved and piloted.
+Supervisor approval and the four-model pilot are the current gates. The exact public model tags are selected, but the approximately 23-GB download and local manifest verification have not been performed. The main corpus must not be generated until the complete prompt bank is reviewed and the pilot passes.

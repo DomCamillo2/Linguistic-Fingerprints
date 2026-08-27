@@ -20,6 +20,8 @@ REQUIRED_GENERATION_COLUMNS = {
     "temperature",
     "top_p",
     "seed",
+    "runtime_version",
+    "generation_options_json",
     "created_at_utc",
     "status",
     "error",

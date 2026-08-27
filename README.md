@@ -19,17 +19,18 @@ The goal is explanation, not a model leaderboard. Predictive accuracy is seconda
 
 | Dimension | Planned value |
 |---|---|
-| Model comparison | 2 matched families × 2 versions (earlier/later) |
-| Language | English working assumption; freeze before main collection |
-| Prompts | 100–120 prompts, balanced across task types |
+| Model comparison | Llama 2 7B Chat → Llama 3.1 8B Instruct; Gemma 2 9B IT → Gemma 3 12B IT |
+| Language | English |
+| Prompts | 100 prompts; 20 in each of five task types |
 | Pairing | Every model receives every prompt |
-| Output length | Same requested range for all models |
-| Features | Approximately 20–30 predefined linguistic measures |
-| Main analysis | Paired/grouped comparisons by prompt and family |
+| Output length | 120–150 words for every response |
+| Sampling | One deterministic response per prompt/model; seed 42 |
+| Features | 30 predefined linguistic measures |
+| Main analysis | Paired prompt-level contrasts within each family |
 | Exploratory analysis | PCA and clustering |
-| Predictive analysis | Interpretable old/new classifier with prompt-blocked CV |
+| Predictive analysis | L2 logistic regression with prompt-blocked 5-fold CV |
 
-Model pairs are deliberately not frozen yet. They must be comparable in scale and instruction-tuning status, accessible through a reproducible interface, and documented by immutable model identifiers.
+The proposal-level design and exact Ollama tags are recorded in [config/study.yaml](config/study.yaml) and [config/models.yaml](config/models.yaml). They become the main-run freeze only after all four models have been installed and the 20-prompt pilot has passed its documented quality gates.
 
 ## Non-negotiable validity rules
 
@@ -50,7 +51,7 @@ AGENTS.md                    instructions and guardrails for LLM/coding agents
 llms.txt                     short LLM entry point
 PROJECT_PLAN.md              locked research design and decision gates
 proposal/                    course proposal draft
-config/                      study and model configuration templates
+config/                      proposal-level study and exact model configuration
 prompts/                     pilot prompts and final prompt registry
 data/raw/                    immutable model outputs (not committed by default)
 data/interim/                validated and reshaped data
@@ -88,10 +89,12 @@ python scripts/extract_features.py \
 
 ## Current status
 
-The repository is in the design/pilot stage. Before the main run, freeze:
+The proposal design, preliminary literature review, model selection, and analysis plan are complete. Before the main run:
 
-- the two matched model families and four exact model identifiers;
-- the study language;
-- the final prompt registry;
-- generation settings and target length;
-- the primary feature list and statistical contrasts.
+- obtain supervisor approval for the topic change;
+- install and verify all four exact model manifests;
+- complete and review the 100-prompt registry;
+- run the 20-prompt pilot and apply its pass/fail gates;
+- record the resulting final analysis freeze.
+
+The course-requirement mapping and remaining human decisions are tracked in [proposal/PROPOSAL_CHECKLIST.md](proposal/PROPOSAL_CHECKLIST.md).

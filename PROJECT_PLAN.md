@@ -12,11 +12,11 @@ Do earlier and later versions of matched LLM families exhibit distinguishable li
 
 “Generation” means the earlier/later relation between two documented versions inside the same model family. It does not mean a universal historical era shared by all LLMs.
 
-Planned design:
+Proposal-level design:
 
 ```text
-family_A: earlier_A → later_A
-family_B: earlier_B → later_B
+Llama: Llama 2 7B Chat → Llama 3.1 8B Instruct
+Gemma: Gemma 2 9B Instruction Tuned → Gemma 3 12B Instruction Tuned
 ```
 
 The family-matched design helps distinguish an earlier/later contrast from a pure provider or family contrast. With two families, replication across families remains limited and all conclusions must be cautious.
@@ -37,15 +37,15 @@ H4 is supported only by prompt-blocked evaluation. A classifier that sees the sa
 | `family` | 2 matched model families; blocking/moderating factor |
 | `generation` | earlier/later; primary explanatory variable |
 | `model_id` | 4 exact versions; nested in family × generation |
-| `prompt_id` | 100–120 prompts; repeated-measures block |
+| `prompt_id` | 100 prompts; repeated-measures block |
 | `task_type` | balanced prompt genre; stratification variable |
-| response | one or more generated texts per cell |
+| response | one deterministic generated text per cell |
 
-Minimum main corpus with one response per cell: 100 prompts × 4 models = 400 texts.
+Main corpus: 100 prompts × 4 models = 400 texts.
 
 ## Prompt design
 
-Prompts should be balanced across at least five task types:
+Prompts are balanced across five task types, with 20 prompts each:
 
 1. explanation;
 2. narrative;
@@ -64,7 +64,7 @@ Each prompt must:
 
 ## Feature inventory
 
-Pre-register the final list before the main analysis. Candidate groups:
+The 30 proposal-level confirmatory features are listed in the proposal and implemented in `src/linguistic_fingerprints/features.py`. They become the main-run freeze after the pilot and code audit. Groups:
 
 ### Lexical
 
@@ -104,7 +104,7 @@ All measures must have a transparent definition and be computed identically for 
 
 ### B. Primary inference
 
-Use paired or hierarchical analyses that respect prompt repetition and family structure. Report effect sizes and confidence intervals. Candidate implementations include prompt-level paired bootstrap contrasts and mixed-effects models; the final method must be frozen after the pilot.
+For each of the 30 features and two families, compute the within-prompt contrast `later − earlier`. Report the mean paired difference, a standardized paired effect, and a 95% percentile interval from 10,000 prompt bootstrap resamples with seed 42. Use two-sided paired permutation tests and Benjamini–Hochberg correction across the 60 confirmatory feature/family tests at `q=0.05`.
 
 ### C. PCA
 
@@ -116,9 +116,9 @@ Use paired or hierarchical analyses that respect prompt repetition and family st
 
 ### D. Classification
 
-Primary model: regularized logistic regression or linear SVM in a scikit-learn pipeline.
+Primary model: L2-regularized logistic regression (`C=1`) in a scikit-learn pipeline.
 
-- outer evaluation: `StratifiedGroupKFold` or `GroupKFold`, groups=`prompt_id`;
+- outer evaluation: five-fold `StratifiedGroupKFold`, groups=`prompt_id`;
 - preprocessing fitted within folds;
 - report balanced accuracy, macro-F1, ROC-AUC where appropriate, and fold uncertainty;
 - compare against a dummy baseline;
@@ -147,7 +147,7 @@ Exploratory only. Compare multiple seeds/algorithms and report silhouette/stabil
 
 ### Gate 1 — model feasibility
 
-All four exact versions are accessible, comparable, and reproducibly identifiable.
+Install and load all four exact tags from `config/models.yaml`; capture the local Ollama version and full runtime digests. Proposal-level public manifests have been verified, but local installation remains pending.
 
 ### Gate 2 — pilot
 

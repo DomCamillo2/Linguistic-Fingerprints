@@ -1,24 +1,71 @@
 project_title: Linguistic Fingerprints across LLM Generations
-language: en  # Working assumption; freeze before main collection.
+design_status: proposal_frozen_pending_pilot
+language: en
+prompt_count: 100
+task_types:
+  explanation: 20
+  narrative: 20
+  argumentation: 20
+  advice: 20
+  reflection: 20
 target_words:
   min: 120
   max: 150
-prompt_count_target: 100
 responses_per_prompt_model: 1
 random_seed: 42
 spacy_model: en_core_web_sm
+
 generation:
+  runtime: ollama
+  endpoint: /api/chat
   temperature: 0
   top_p: 1
+  top_k: 40
+  repeat_penalty: 1
+  seed: 42
+  num_ctx: 4096
+  num_predict: 384
   system_prompt: >-
     Follow the user's writing instruction. Produce only the requested text,
     without discussing the instruction or identifying yourself.
-analysis:
-  grouping_key: prompt_id
-  primary_classifier: logistic_regression
+
+pilot:
+  prompts: 20
+  expected_responses: 80
+  minimum_ok_rate: 0.95
+  minimum_length_compliance: 0.80
+  maximum_model_refusal_or_format_failure: 0.10
+
+features:
+  confirmatory_count: 30
+  mattr_window: 50
+  manual_audit_fraction: 0.10
+  audit_only:
+    - n_surface_tokens
+    - n_words
+    - raw_ttr
+
+inference:
+  unit: prompt_id
+  contrast: later_minus_earlier_within_family
+  bootstrap_repetitions: 10000
+  permutation_sidedness: two_sided
+  multiple_testing: benjamini_hochberg
+  fdr_q: 0.05
+
+classification:
+  estimator: logistic_regression_l2
+  C: 1.0
+  cv: StratifiedGroupKFold
   cv_folds: 5
+  grouping_key: prompt_id
+  baseline: stratified_dummy
   primary_metrics:
     - balanced_accuracy
     - macro_f1
     - roc_auc
-status: draft_not_frozen
+
+proposal:
+  due: 2026-08-31
+  supervisor_approval: pending
+  previous_topic_change: pending_approval

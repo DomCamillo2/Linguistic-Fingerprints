@@ -22,6 +22,8 @@ Required columns:
 | `temperature` | decoding temperature |
 | `top_p` | nucleus-sampling value |
 | `seed` | provider seed if supported |
+| `runtime_version` | exact Ollama version used for the attempt |
+| `generation_options_json` | canonical JSON containing all generation options, including `top_k`, `repeat_penalty`, `num_ctx`, and `num_predict` |
 | `created_at_utc` | ISO-8601 timestamp |
 | `status` | `ok`, `refusal`, `error`, or `invalid` |
 | `error` | raw error text when applicable |

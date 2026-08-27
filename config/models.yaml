@@ -1,0 +1,71 @@
+runtime: ollama
+quantization: Q4_K_M
+execution: sequential
+hardware_checked:
+  memory_gb: 24
+  processor: Apple M4 Pro
+checked_on: 2026-08-27
+
+models:
+  - model_id: llama2_7b_chat_q4km
+    family: llama
+    generation: earlier
+    provider: Meta
+    release_date: 2023-07-18
+    provider_model: Llama 2 7B Chat
+    ollama_tag: llama2:7b-chat-q4_K_M
+    ollama_manifest_id: fe3834f64df5
+    parameters_billion: 6.74
+    tuning: chat
+    input_modality: text
+    installed: false
+    source: https://ollama.com/library/llama2:7b-chat-q4_K_M
+
+  - model_id: llama31_8b_instruct_q4km
+    family: llama
+    generation: later
+    provider: Meta
+    release_date: 2024-07-23
+    provider_model: Llama 3.1 8B Instruct
+    ollama_tag: llama3.1:8b-instruct-q4_K_M
+    ollama_manifest_id: 46e0c10c039e
+    parameters_billion: 8.03
+    tuning: instruct
+    input_modality: text
+    installed: false
+    source: https://ollama.com/library/llama3.1:8b-instruct-q4_K_M
+
+  - model_id: gemma2_9b_instruct_q4km
+    family: gemma
+    generation: earlier
+    provider: Google DeepMind
+    release_date: 2024-06-27
+    provider_model: Gemma 2 9B Instruction Tuned
+    ollama_tag: gemma2:9b-instruct-q4_K_M
+    ollama_manifest_id: c20bec88025f
+    parameters_billion: 9.24
+    tuning: instruct
+    input_modality: text
+    installed: false
+    source: https://ollama.com/library/gemma2:9b-instruct-q4_K_M
+
+  - model_id: gemma3_12b_it_q4km
+    family: gemma
+    generation: later
+    provider: Google DeepMind
+    release_date: 2025-03-12
+    provider_model: Gemma 3 12B Instruction Tuned
+    ollama_tag: gemma3:12b-it-q4_K_M
+    ollama_manifest_id: f4031aab637d
+    parameters_billion: 12
+    tuning: instruct
+    input_modality: text_and_image
+    study_input_modality: text_only
+    installed: false
+    source: https://ollama.com/library/gemma3:12b-it-q4_K_M
+
+notes:
+  - All four models use the same Ollama quantization class, but model-specific chat templates remain part of the deployed-system comparison.
+  - Manifest IDs were verified against the public Ollama library on 2026-08-27; full local runtime digests must be captured after installation and immediately before collection.
+  - Installation and the 20-prompt pilot are required before the proposal-level selection becomes the main-run freeze.
+

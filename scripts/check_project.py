@@ -13,8 +13,11 @@ REQUIRED_PATHS = [
     "llms.txt",
     "PROJECT_PLAN.md",
     "proposal/PROPOSAL_DRAFT.md",
+    "proposal/PROPOSAL_CHECKLIST.md",
     "config/study.yaml",
-    "config/models.example.yaml",
+    "config/models.yaml",
+    "literature/REFERENCES.md",
+    "literature/references.bib",
     "prompts/pilot_prompts.csv",
     "data/README.md",
     "reports/PREP_STATUS.md",
@@ -48,6 +51,19 @@ def main() -> None:
             task_counts[row["task_type"]] = task_counts.get(row["task_type"], 0) + 1
         if len(set(task_counts.values())) != 1:
             errors.append(f"pilot task types are not balanced: {task_counts}")
+
+    models_path = ROOT / "config" / "models.yaml"
+    if models_path.is_file():
+        models_text = models_path.read_text(encoding="utf-8")
+        model_count = sum(line.startswith("  - model_id:") for line in models_text.splitlines())
+        if model_count != 4:
+            errors.append(f"expected 4 configured models, found {model_count}")
+        if "TBD" in models_text:
+            errors.append("config/models.yaml still contains TBD placeholders")
+
+    proposal_path = ROOT / "proposal" / "PROPOSAL_DRAFT.md"
+    if proposal_path.is_file() and "TBD" in proposal_path.read_text(encoding="utf-8"):
+        errors.append("proposal draft still contains TBD placeholders")
 
     if errors:
         raise SystemExit("Project check failed:\n- " + "\n- ".join(errors))
