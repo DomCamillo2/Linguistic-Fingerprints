@@ -52,6 +52,33 @@ UPOS_TAGS = (
     "VERB",
 )
 
+AUDIT_FEATURES = (
+    "n_surface_tokens",
+    "n_words",
+    "raw_ttr",
+)
+
+CONFIRMATORY_FEATURES = (
+    "n_sentences",
+    "n_paragraphs",
+    "mean_word_chars",
+    "mean_sentence_words",
+    "sd_sentence_words",
+    "mattr_50",
+    "repeated_token_rate",
+    "repeated_bigram_rate",
+    "function_word_prop",
+    "modal_prop",
+    "connective_prop",
+    "sentence_initial_connective_prop",
+    "punctuation_prop",
+    "apostrophe_word_prop",
+    "list_line_prop",
+    "heading_line_prop",
+    "adjacent_sentence_lexical_overlap",
+    *(f"upos_{tag}_prop" for tag in UPOS_TAGS),
+)
+
 
 def _safe_mean(values: Sequence[float]) -> float:
     return float(fmean(values)) if values else 0.0

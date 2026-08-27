@@ -1,5 +1,8 @@
-project_title: Linguistic Fingerprints across LLM Generations
-design_status: proposal_frozen_pending_pilot
+project_title: Generalising Linguistic Fingerprints across LLM Families and Genres
+design_status: reframed_pending_supervisor_and_pilot
+primary_question: >-
+  To what extent do linguistically interpretable predecessor-successor
+  differences generalise across open-weight model families and text genres?
 language: en
 prompt_count: 100
 task_types:
@@ -52,6 +55,8 @@ inference:
   permutation_sidedness: two_sided
   multiple_testing: benjamini_hochberg
   fdr_q: 0.05
+  cross_family_direction_summary: prespecified_feature_sign_concordance
+  universal_generation_claim_allowed: false
 
 classification:
   estimator: logistic_regression_l2
@@ -60,10 +65,42 @@ classification:
   cv_folds: 5
   grouping_key: prompt_id
   baseline: stratified_dummy
+  protocols:
+    within_family_baseline:
+      role: supporting
+      split: stratified_group_k_fold
+      report_separately_by_family: true
+    cross_genre:
+      role: primary
+      split: leave_one_task_type_out
+      train_task_types: 4
+      test_task_types: 1
+      report_separately_by_family: true
+    cross_family:
+      role: primary
+      directions:
+        - llama_to_gemma
+        - gemma_to_llama
+      matched_prompt_bank: true
+    cross_family_unseen_prompt:
+      role: robustness
+      split: stratified_group_k_fold
+      grouping_key: prompt_id
+      directions:
+        - llama_to_gemma
+        - gemma_to_llama
   primary_metrics:
     - balanced_accuracy
     - macro_f1
     - roc_auc
+
+length_sensitivity:
+  required: true
+  actual_word_count_audited: true
+  variants:
+    - add_n_words_as_covariate
+    - preregistered_length_matched_subset
+  silent_truncation_allowed: false
 
 proposal:
   due: 2026-08-31

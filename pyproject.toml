@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "linguistic-fingerprints"
-version = "0.1.0"
-description = "Controlled linguistic profiling of matched LLM versions"
+version = "0.2.0"
+description = "Cross-family and cross-genre generalisation of interpretable LLM version fingerprints"
 requires-python = ">=3.11"
 
 [tool.setuptools.packages.find]

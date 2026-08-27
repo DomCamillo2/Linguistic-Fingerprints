@@ -2,7 +2,17 @@ import math
 
 import spacy
 
-from linguistic_fingerprints.features import extract_text_features, moving_average_type_token_ratio
+from linguistic_fingerprints.features import (
+    AUDIT_FEATURES,
+    CONFIRMATORY_FEATURES,
+    extract_text_features,
+    moving_average_type_token_ratio,
+)
+
+
+def test_feature_inventory_is_frozen_at_thirty_confirmatory_features():
+    assert len(CONFIRMATORY_FEATURES) == 30
+    assert set(CONFIRMATORY_FEATURES).isdisjoint(AUDIT_FEATURES)
 
 
 def test_mattr_short_sequence_uses_available_length():

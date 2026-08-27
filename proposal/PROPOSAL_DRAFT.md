@@ -2,52 +2,52 @@
 
 ## Title and contributors
 
-**Linguistic Fingerprints across LLM Generations: A Matched-Family, Prompt-Controlled Study**
+**Generalising Linguistic Fingerprints across LLM Families and Genres**
 
-**Contributors:** Dominik Soballa and Luca Bouché. The project is joint work. Dominik has primary responsibility for reproducible local model inference, data engineering, PCA, and classification. Luca has primary responsibility for the literature review, prompt design, linguistic feature validation, and paired group comparisons. Both contributors review the pilot, interpret all results, write the report, and perform the final reproducibility audit.
+**Contributors:** Dominik Soballa and Luca Bouché. The project is joint work. Dominik has primary responsibility for reproducible local model inference, data engineering, and the cross-genre/cross-family evaluation pipelines. Luca has primary responsibility for the literature review, prompt design, linguistic feature validation, paired contrasts, and transfer interpretation. Both contributors review the pilot, all sensitivity analyses, the final report, and the reproducibility audit.
 
 ## 1. Introduction and motivation
 
-Large language models are frequently described in generational terms, but release date is not a single causal variable. Successive versions may differ in training data, architecture, scale, post-training, safety alignment, tokenization, and chat templates. Consequently, apparent differences between “older” and “newer” models may instead reflect model-family or task effects. A controlled, linguistically interpretable comparison is needed before claims about generational writing styles can be made.
+Large language models are frequently described in generational terms, but release date is not a single causal variable. Successive versions may differ in training data, architecture, scale, tokenization, post-training, alignment, and chat templates. A measured predecessor-successor contrast is therefore associated with a deployed model transition; it cannot isolate the causal effect of “newer-generation training.”
 
-Previous work shows that generated texts contain source-model signals. Uchendu et al. (2020) and Munir et al. (2021) demonstrated that synthetic texts can be attributed to their generating systems, while Zahid et al. (2024) constructed linguistic profiles for five conversational agents and reported strong model-attribution performance. Guo et al. (2025) further argues that LLM evaluation should include lexical and syntactic diversity, rather than focusing only on task performance.
+Previous work already shows that generated texts contain source-model and version signals. Uchendu et al. (2020), Munir et al. (2021), and Zahid et al. (2024) establish model attribution and interpretable linguistic profiling. More importantly for this proposal, Przystalski et al. (2026) directly compare Llama 2 and Llama 3 over the same Wikipedia topics and prompt templates, using interpretable stylometric features, tree classifiers, and topic-grouped cross-validation. Huynh and McNamara (2026) measure linguistic shifts across GPT updates under identical personalization tasks, while Rudnicka and Juzek (2026) compare 2024 and 2026 model cohorts using the same societal-topic prompts.
 
-Most directly, Gude et al. (2026) compared two groups of LLMs and found lower lexical and syntactic diversity in the newer group. Their older group consisted mainly of base models, whereas the newer group consisted of instruction-tuned systems, and the experiment was restricted to news leads. The proposed project is therefore a controlled replication and extension: it compares instruction/chat-tuned predecessors and successors within two matched families, generates all texts locally through the same runtime, uses the same prompts for every model, and tests five writing-task types. It uses simpler, transparent corpus-linguistic features that fit the methods taught in the course.
+It is therefore no longer defensible to claim that matched-prompt, interpretable comparisons of earlier and later models are missing. The narrower open question is whether predecessor-successor differences transfer across open-weight families and heterogeneous text genres. This project tests that question with matched Llama and Gemma pairs, five writing-task types, and a compact prespecified set of 30 interpretable features. Simple version classification becomes a baseline; leave-one-task-type-out and bidirectional cross-family transfer become the main analyses.
 
 ## 2. Research objective
 
 **Main research question:**
 
-> Do selected earlier and later instruction-tuned versions of matched LLM families exhibit distinguishable linguistic profiles under controlled prompting?
+> To what extent do linguistically interpretable predecessor-successor differences generalise across open-weight model families and text genres?
 
 **Subquestions:**
 
-1. Which predefined lexical, morphosyntactic, and structural features differ between the selected earlier and later versions?
-2. Which differences have the same direction in both the Llama and Gemma families?
-3. Do standardized feature vectors display earlier/later structure in a two-dimensional PCA representation?
-4. Can a transparent classifier predict the earlier/later label for responses to prompts that were absent from training?
-5. To what extent do any observed differences depend on model family or writing-task type?
+1. Which predefined lexical, morphosyntactic, and structural features change within the Llama and Gemma predecessor-successor pairs?
+2. Which effect directions agree across both families?
+3. Does an earlier-versus-later classifier generalise to a writing-task type absent from training?
+4. Does a classifier trained on Llama transfer to Gemma, and vice versa?
+5. Does cross-family transfer remain when target prompts are also absent from training?
 
 The project does not seek a universal property of all historical LLM generations. “Generation” is operationalized as an earlier/later relation inside each selected family, and conclusions are limited to the four models, prompt sample, English language, local runtime, and recorded generation settings.
 
 ## 3. Hypotheses
 
-- **H1 — Feature differences:** At least one preregistered feature differs between the earlier and later version within at least one model family after false-discovery-rate correction.
-- **H2 — Cross-family replication:** At least one feature has the same earlier-to-later direction and a corrected non-zero paired effect in both families.
-- **H3 — Multivariate structure:** PCA reveals partial earlier/later structure after feature standardization. This hypothesis is exploratory because PCA components are not automatically linguistically interpretable.
-- **H4 — Out-of-prompt prediction:** L2-regularized logistic regression predicts `earlier` versus `later` above the balanced 0.50 baseline when every response to one prompt is kept in the same cross-validation fold.
+- **H1 — Feature differences:** At least one preregistered feature differs between the earlier and later version within at least one family after false-discovery-rate correction.
+- **H2 — Cross-family directional replication:** A prespecified subset of features has concordant earlier-to-later directions in Llama and Gemma, with effect estimates and uncertainty reported for both.
+- **H3 — Cross-genre generalisation:** L2-regularized logistic regression retains above-baseline balanced accuracy when each complete writing-task type is held out in turn, reported separately by family.
+- **H4 — Cross-family transfer:** The fixed classifier transfers above baseline from Llama to Gemma and from Gemma to Llama. A stricter prompt-blocked transfer is the robustness test.
 
 An absence of support is informative: it would show that the selected simple features do not provide a stable cross-family generational fingerprint under the controlled conditions.
 
 ## 4. Preliminary literature review and research gap
 
-Research on neural-text authorship attribution provides evidence that generators leave detectable traces. Uchendu et al. (2020) formulated attribution tasks for distinguishing human and machine texts and for identifying a generating method. Munir et al. (2021) similarly argued that subtle marks inherited from a source model can support attribution, although their strongest system used a fine-tuned transformer rather than transparent linguistic features.
+Research on neural-text authorship attribution shows that generators leave detectable traces. Uchendu et al. (2020) formulate source-generator attribution, Munir et al. (2021) identify inherited source-model signals, and Zahid et al. (2024) profile conversational agents using linguistic features, PCA, and classification. Guo et al. (2025) complements this work by treating lexical, syntactic, and semantic diversity as evaluation objects.
 
-Zahid et al. (2024) is especially relevant methodologically: the authors profiled five conversational agents using linguistic features, PCA, and classifiers, finding that individual agents could often be distinguished. Their goal, however, was attribution to individual systems rather than controlled comparison of predecessor/successor pairs. Guo et al. (2025) supplies a complementary diversity perspective by benchmarking LLM outputs at lexical, syntactic, and semantic levels.
+The closest methodological precedent is Przystalski et al. (2026). Their dataset contains Wikipedia-topic descriptions from Llama 2 7B, Llama 3 8B, and other generators. The models receive the same two prompt templates, their outputs are represented with 195 StyloMetrix features or approximately 3,000 frequency features, and decision-tree/LightGBM classifiers use 10-fold grouped cross-validation so one topic never appears in both training and test data. This directly combines an earlier/later Llama comparison, matched prompts, interpretable features, classification, and topic blocking. Accordingly, none of those components is presented as novel here.
 
-The closest study is Gude et al. (2026), which compares two model generations using formal HPSG analyses and diversity indices. It provides a concrete result to replicate—reduced diversity in newer models—but its generation contrast also overlaps with base-versus-instruction-tuned status and its data cover one genre. The present project holds instruction-tuned status constant, compares versions inside families, and samples five task types. It therefore tests whether a generational pattern remains visible with accessible UPOS, lexical-diversity, repetition, and structural features.
+Other recent work further narrows the claim. Gude et al. (2026) compare older and newer model cohorts and report reduced linguistic diversity in the newer cohort, although generation overlaps with tuning regime and the data are news leads. Huynh and McNamara (2026) use identical personalization tasks and NLP features to document shifts between GPT-4o deployments and GPT-4.1. Rudnicka and Juzek (2026) use the same prompts for 2024 and 2026 model cohorts and report both cohort-level change and model-specific profiles.
 
-Evaluation design is also important. Xu et al. (2024) found that trained detectors are sensitive to shifts in prompts, text length, topics, and tasks. Xia et al. (2026) linked cross-prompt, cross-model, and cross-domain generalization gaps to shifts in linguistic features. These findings motivate the paired prompt design and the rule that a `prompt_id` cannot appear in both training and testing.
+The defensible gap is therefore a generalisation question. Existing evidence does not establish whether a compact, prespecified predecessor-successor signal learned in one open-weight family transfers to another, or whether it survives complete text-genre shift. Xu et al. (2024) and Xia et al. (2026) show why this matters: detectors can fail under prompt, task, model, and domain shift, and those failures correspond to linguistic feature changes. The proposed contribution is a controlled, incremental multi-family and multi-genre extension with explicit failure-compatible outcomes.
 
 ## 5. Data, models, and scope
 
@@ -76,8 +76,10 @@ Included:
 
 - transparent lexical, UPOS, sentence-length, repetition, connective, punctuation, and formatting features;
 - paired earlier/later comparisons within each family;
-- task-type sensitivity;
-- PCA, prompt-blocked logistic regression, and optional clustering.
+- leave-one-task-type-out generalisation;
+- bidirectional cross-family transfer;
+- strict cross-family transfer to unseen prompts;
+- prompt-blocked within-family classification, PCA, and optional clustering as supporting analyses.
 
 Excluded:
 
@@ -104,7 +106,8 @@ The existing 20-prompt pilot registry contains four prompts per task type. The p
 - at least 95% of the 80 planned responses have status `ok`;
 - at least 80% fall within 120–150 words;
 - no model has a systematic refusal or formatting failure rate above 10%;
-- provenance fields and raw responses are complete.
+- provenance fields and raw responses are complete;
+- every task type retains enough valid earlier/later pairs for held-out evaluation.
 
 If length compliance fails, the wording may be revised once for all prompts and models; any revision increments the prompt version and requires a new pilot. No model-specific prompt repair is permitted.
 
@@ -121,29 +124,35 @@ Thirty features form the confirmatory inventory:
 
 Actual word count, surface-token count, and raw TTR are audit variables, not confirmatory fingerprint features. Proportions use the relevant token or line denominator. MATTR is preferred to raw TTR because raw TTR is strongly length-dependent.
 
-### 6.4 Aggregation and primary inference
+### 6.4 Paired feature analysis
 
 Coverage, failures, length, and every feature are summarized by model, family, generation, task type, and prompt. The primary unit for feature inference is the within-prompt difference `later − earlier`, calculated separately for Llama and Gemma.
 
 For each feature/family combination, the analysis reports the mean paired difference, a standardized paired effect, and a 95% percentile confidence interval from 10,000 bootstrap resamples of prompts with seed 42. Two-sided paired permutation tests are corrected across the 60 confirmatory feature/family tests with the Benjamini–Hochberg procedure at `q=0.05`. Task-type estimates are exploratory and reported with uncertainty but without separate confirmatory claims.
 
-H1 is supported if at least one corrected feature/family test is non-zero. H2 is supported only when the same feature has the same effect direction and passes the corrected criterion in both families.
+H1 is supported if at least one corrected feature/family test is non-zero. H2 is evaluated with the two family-specific estimates and their uncertainty visible; sign agreement alone is not treated as proof of a general generation effect. These analyses explain the measured differences but do not establish that they transfer.
 
-### 6.5 PCA and clustering
+### 6.5 Cross-genre generalisation
 
-The 30 features are standardized before PCA. The analysis reports explained-variance ratios and loadings and plots points by generation, family, and task type. PCA is used for visualization, not significance testing. Clustering is optional and secondary; if performed, it uses standardized features, multiple seeds, silhouette scores, and cluster-stability checks. Cluster composition alone is not evidence of a generation effect.
+For each family, five leave-one-task-type-out evaluations are run. In each evaluation, the fixed classifier is fitted on four task types and tested on the complete fifth type. Median imputation and standardisation are fitted on training data only. Results include balanced accuracy, macro-F1, ROC-AUC, confusion counts, and uncertainty for every family × held-out-task cell. The complete cell table is primary; an average across task types cannot hide one failed genre.
 
-### 6.6 Classification
+### 6.6 Cross-family transfer
 
-The primary classifier is L2-regularized logistic regression with fixed `C=1`. A scikit-learn pipeline fits imputation and standardization only on training folds. Five-fold `StratifiedGroupKFold` evaluation groups by `prompt_id`, so all four responses to one prompt remain in the same fold. A stratified dummy classifier provides the 0.50 baseline.
+The primary classifier is L2-regularized logistic regression with fixed `C=1`. A scikit-learn pipeline fits median imputation and standardisation on training data only. It is evaluated in both directions: train on all Llama responses and test on Gemma, then train on Gemma and test on Llama. Both directions are reported separately against a stratified dummy baseline.
 
-The report includes balanced accuracy, macro-F1, ROC-AUC, fold results, prompt-level bootstrap uncertainty for out-of-fold predictions, confusion matrices, and standardized coefficients. Classification supports H4 only if the confidence interval for balanced accuracy excludes 0.50. Coefficients are interpreted as associations among correlated measurements, not causal effects.
+A stricter robustness test changes both family and prompt: five prompt-grouped folds train on source-family responses from four folds and test on target-family responses whose `prompt_id` values are in the fifth. This distinguishes transfer to a new family from memorisation of prompt-specific content. The report includes balanced accuracy, macro-F1, ROC-AUC, fold results, prompt-level bootstrap uncertainty, confusion matrices, and standardised coefficients. Coefficients are associations among correlated measurements, not causal effects.
+
+### 6.7 Baselines, length sensitivity, and exploration
+
+Prompt-blocked five-fold within-family classification establishes simple separability but is a supporting baseline, not the contribution. Actual word count is audited. The analysis is repeated with actual length as an explicit covariate and on a preregistered length-matched subset; a 120–150-word prompt instruction is not described as complete length control.
+
+The 30 features are standardised before PCA. Explained variance and loadings are reported, and points are marked by generation, family, and task type. Clustering is optional and secondary; it uses multiple seeds and stability checks. Visual separation or cluster composition is not evidence of transfer.
 
 ## 7. Risks and limitations
 
 The design contains only two families and one predecessor/successor pair per family. Family is therefore a fixed comparison, not a population sample. The pairs differ somewhat in parameter count, training, architecture, tokenization, alignment, context length, and native chat template. These differences are scientifically interesting parts of deployed versions but prevent causal attribution to age alone.
 
-Prompt genre and output length can dominate linguistic features. Pairing every prompt across models, balancing task types, requesting one length range, using normalized features, and blocking cross-validation by prompt reduce these threats. Automated SpaCy annotation can introduce measurement error, addressed through one pinned pipeline and a manual audit. Temperature-zero single runs prioritize reproducibility but do not estimate stochastic decoding variation. Finally, results may not generalize beyond English, short prompted texts, Ollama's quantized implementations, or the four exact manifests.
+Prompt genre and output length can dominate linguistic features. Pairing every prompt across models, balancing task types, holding out complete task types, using normalised features, and running length-aware sensitivity analyses reduce these threats. Automated SpaCy annotation can introduce measurement error, addressed through one pinned pipeline and a manual audit. Temperature-zero single runs prioritise reproducibility but do not estimate stochastic decoding variation. Twenty prompts per task type make individual genre estimates imprecise, and two families provide only two predecessor-successor replications. Results may not generalise beyond English, short prompted texts, Ollama's quantised implementations, or the four exact manifests.
 
 ## 8. Work and time plan
 
@@ -156,9 +165,9 @@ Prompt genre and output length can dominate linguistic features. Pairing every p
 | 15–28 Sep | four-model pilot and design freeze | install/run models, capture manifests | manual response and POS audit | pilot pass/fail decision |
 | 29 Sep–12 Oct | main corpus | resumable generation and provenance | live quality audit | confirm 400-cell coverage |
 | 13–26 Oct | feature corpus | pipeline and validation | linguistic error analysis | freeze analysis table |
-| 27 Oct–9 Nov | group analysis | reproducible summaries | paired bootstrap/permutation analysis | interpret H1–H2 |
-| 10–23 Nov | PCA and classification | PCA/CV pipelines | loading/coefficient linguistic interpretation | interpret H3–H4 |
-| 24 Nov–7 Dec | optional clustering and robustness | stability implementation | cluster profile analysis | retain only stable results |
+| 27 Oct–9 Nov | feature contrasts | reproducible summaries | paired bootstrap/permutation analysis | interpret H1–H2 |
+| 10–23 Nov | generalisation tests | cross-genre/cross-family pipelines | coefficient and failure analysis | interpret H3–H4 |
+| 24 Nov–7 Dec | robustness and exploration | unseen-prompt, PCA, stability code | length and genre sensitivity analysis | retain only preregistered conclusions |
 | 8–21 Dec | final report | methods/reproducibility sections | background/results discussion | joint full-paper revision |
 | 22–31 Dec | submission | clean re-run and release | citation/argument audit | final GitHub submission |
 
@@ -168,9 +177,9 @@ Both contributors participate across all stages; the primary column denotes resp
 
 Three result patterns are meaningful:
 
-1. **Replicated differences:** the same features change in the same direction in both families and out-of-prompt classification is above baseline. This supports a limited cross-family fingerprint for the selected versions.
-2. **Family-specific differences:** effects or classification are strong inside one family but inconsistent across families. This argues against a shared generational fingerprint and points to family-specific development.
-3. **No robust separation:** corrected paired effects are small and classification remains near baseline. This shows that the selected transparent features do not distinguish these versions reliably under the sampled conditions.
+1. **Transferable pattern:** feature directions agree, held-out-task performance is stable, and transfer works in both family directions. This supports a limited shared pattern for the selected transitions.
+2. **Family- or genre-specific fingerprints:** within-family separation is present, but cross-family or cross-genre transfer fails. This is evidence against a shared generation-associated fingerprint and is a central result rather than a failed experiment.
+3. **Insufficient interpretable signal:** paired effects are small and all classifiers remain near baseline. This shows that the compact feature inventory does not distinguish the selected transitions reliably under the sampled conditions.
 
 The study's contribution is therefore not contingent on obtaining high accuracy. It provides a controlled test, an interpretable feature inventory, and a reproducible corpus design that can later be extended to more families, languages, genres, or repeated generations.
 
@@ -184,7 +193,13 @@ Gude, A., Santos-Rios, R., Bond, F., Flickinger, D., Gómez-Rodríguez, C., & Za
 
 Guo, Y., Shang, G., & Clavel, C. (2025). Benchmarking linguistic diversity of large language models. *Transactions of the Association for Computational Linguistics, 13*, 1507–1526. https://doi.org/10.1162/tacl.a.47
 
+Huynh, L., & McNamara, D. S. (2026). Evaluation of linguistic consistency of LLM-generated text personalization using natural language processing. *Electronics, 15*(6), 1262. https://doi.org/10.3390/electronics15061262
+
 Munir, S., Batool, B., Shafiq, Z., Srinivasan, P., & Zaffar, F. (2021). Through the looking glass: Learning to attribute synthetic text generated by language models. *Proceedings of EACL 2021*, 1811–1822. https://doi.org/10.18653/v1/2021.eacl-main.155
+
+Przystalski, K., Argasiński, J. K., Grabska-Gradzińska, I., & Ochab, J. K. (2026). Stylometry recognizes human and LLM-generated texts in short samples. *Expert Systems with Applications, 296*, 129001. https://doi.org/10.1016/j.eswa.2025.129001
+
+Rudnicka, K., & Juzek, T. S. (2026). Beyond “AI Language”: The case for the idiolectal nature of LLM output. *arXiv preprint*. https://arxiv.org/abs/2608.06589
 
 Uchendu, A., Le, T., Shu, K., & Lee, D. (2020). Authorship attribution for neural text generation. *Proceedings of EMNLP 2020*, 8384–8395. https://doi.org/10.18653/v1/2020.emnlp-main.673
 
@@ -198,4 +213,4 @@ Model reports and release documentation are listed with verified URLs in `litera
 
 ## Approval status
 
-This proposal replaces the previous SpaCy–LLM disagreement topic. The scientific design is ready for supervisor review; the topic change and final proposal still require the supervisor's approval.
+This proposal replaces the previous SpaCy–LLM disagreement topic and supersedes the earlier separability-focused framing. The cross-family and cross-genre objective is ready for supervisor review; the topic change and final proposal still require approval.

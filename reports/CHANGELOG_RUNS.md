@@ -19,3 +19,13 @@ Append entries; never erase history.
 - Fixed 30 confirmatory features, paired prompt bootstrap/permutation inference, BH correction across 60 tests, and prompt-blocked L2 logistic regression.
 - Added an annotated literature review, BibTeX database, exact model configuration, proposal checklist, and expanded proposal draft.
 - No models were downloaded and no generations or analyses were run. Main-run status remains **not started** pending approval, installation, prompt completion, and pilot.
+
+## 2026-08-27 — generalisation-focused reframing
+
+- Replaced the simple “are earlier and later versions distinguishable?” objective with cross-genre and bidirectional cross-family generalisation.
+- Added Przystalski et al. (2026) as the closest precedent and removed claims that matched prompts, interpretable features, direct Llama version comparison, or grouped evaluation are novel.
+- Added Huynh and McNamara (2026) and Rudnicka and Juzek (2026) to the literature positioning.
+- Made leave-one-task-type-out and Llama ↔ Gemma transfer primary; retained within-family classification as a baseline.
+- Added the stricter cross-family/unseen-prompt robustness protocol and required length-aware sensitivity analyses.
+- Added reusable evaluation code, a CLI, and automated tests. No model outputs or empirical study results were created.
+- Main-run status remains **not started** pending supervisor approval, installation, full prompt-bank review, pilot, and final freeze.
