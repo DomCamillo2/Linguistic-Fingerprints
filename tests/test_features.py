@@ -10,8 +10,8 @@ from linguistic_fingerprints.features import (
 )
 
 
-def test_feature_inventory_is_frozen_at_thirty_confirmatory_features():
-    assert len(CONFIRMATORY_FEATURES) == 30
+def test_feature_inventory_is_frozen_at_fifteen_confirmatory_features():
+    assert len(CONFIRMATORY_FEATURES) == 15
     assert set(CONFIRMATORY_FEATURES).isdisjoint(AUDIT_FEATURES)
 
 

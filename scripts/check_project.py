@@ -66,14 +66,15 @@ def main() -> None:
     study_path = ROOT / "config" / "study.yaml"
     if study_path.is_file():
         study_text = study_path.read_text(encoding="utf-8")
-        required_protocols = {
-            "cross_genre:",
-            "cross_family:",
-            "cross_family_unseen_prompt:",
+        required_settings = {
+            "confirmatory_count: 15",
+            "within_family_prompt_blocked:",
+            "leave_one_task_type_out:",
+            "cross_family_transfer: out_of_scope",
         }
-        missing_protocols = sorted(protocol for protocol in required_protocols if protocol not in study_text)
-        if missing_protocols:
-            errors.append(f"missing generalization protocols: {missing_protocols}")
+        missing_settings = sorted(setting for setting in required_settings if setting not in study_text)
+        if missing_settings:
+            errors.append(f"missing course-aligned study settings: {missing_settings}")
 
     proposal_path = ROOT / "proposal" / "PROPOSAL_DRAFT.md"
     if proposal_path.is_file() and "TBD" in proposal_path.read_text(encoding="utf-8"):
@@ -81,7 +82,7 @@ def main() -> None:
 
     if errors:
         raise SystemExit("Project check failed:\n- " + "\n- ".join(errors))
-    print("Project check passed: structure, lecture corpus, and pilot registry are consistent.")
+    print("Project check passed: structure, course scope, and pilot registry are consistent.")
 
 
 if __name__ == "__main__":

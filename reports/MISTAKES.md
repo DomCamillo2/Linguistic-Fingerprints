@@ -4,62 +4,58 @@
 
 **Wrong:** randomly split individual responses into train and test sets.
 
-**Why:** the classifier can exploit prompt topic or wording because other responses to the same prompt occur in training.
+**Why:** another response to the same prompt can appear in training, allowing the classifier to exploit prompt content.
 
-**Required:** group every response with the same `prompt_id` into the same fold.
+**Required:** keep every response sharing a prompt_id in the same fold. For leave-one-task-type-out evaluation, withhold the complete task type.
 
-For leave-one-task-type-out evaluation, withhold the complete `task_type`. Direct cross-family transfer uses the matched prompt bank by design, but it must be accompanied by the stricter cross-family/unseen-prompt evaluation.
+## Ignoring the paired design
+
+**Wrong:** treat all 400 response rows as independent observations for feature inference.
+
+**Required:** calculate later-minus-earlier differences within prompt and family, then analyse prompts as the sampling units.
 
 ## Overclaiming novelty
 
-**Wrong:** “No previous study compares earlier and later LLMs with identical prompts, interpretable features, and grouped evaluation.”
+**Wrong:** claim that no previous study compares LLM versions with matched prompts, interpretable features, or grouped evaluation.
 
 **Why:** Przystalski et al. already combine these elements for Llama 2 and Llama 3.
 
-**Required:** describe this study as an incremental test of cross-family and cross-genre generalisation with a compact feature set.
+**Required:** present the work as a controlled replication and task-type robustness study.
+
+## Scope creep
+
+Mixed-effects models, cross-family classifier transfer, clustering, neural detectors, and additional tuned classifiers are not part of the confirmatory proposal. Do not add them merely because helper code exists.
 
 ## Universal generation claims
 
-**Wrong:** “new LLMs use more adjectives.”
+**Wrong:** state that newer LLMs generally use more adjectives.
 
-**Required:** “the selected later versions used a higher adjective proportion under these prompts and settings,” followed by family-specific evidence.
+**Required:** describe a feature difference for the selected later version, family, prompts, and settings.
 
-## Confusing family and generation
+## Confusing family and version
 
-Pooling two earlier and two later models can hide opposite within-family directions. Always report earlier/later contrasts inside each family before pooled summaries.
+Pooling Llama and Gemma can hide opposite within-family directions. Always report both family-specific comparisons.
 
 ## Length-sensitive diversity
 
-Raw TTR falls as text length increases. Prefer MATTR or another length-robust metric and audit actual output length.
-
-**Wrong:** call length “controlled” only because every prompt requests 120–150 words.
-
-**Required:** record actual length and run the preregistered covariate and length-matched sensitivity analyses.
-
-## PCA interpretation
-
-Principal components are weighted mixtures of scaled features. Inspect loadings; do not name an axis from a visually convenient story alone.
+Raw TTR falls as text length increases. Use MATTR for confirmatory diversity, audit actual word counts, and run the planned sensitivity analysis.
 
 ## Feature leakage
 
-Scaling, imputation, selection, and PCA fitted on the full dataset leak test information. Put every learned transformation inside the cross-validation pipeline.
+Imputation and scaling fitted on the full dataset leak test information. Fit them inside each training fold.
 
 ## Accuracy-only reporting
 
-Report baseline, balanced accuracy, macro-F1, uncertainty, fold behavior, and interpretable feature evidence. Accuracy alone does not answer the linguistic question.
+Report a dummy baseline, balanced accuracy, macro-F1, fold behaviour, and confusion matrices. Accuracy alone does not answer the linguistic question.
 
-## Hiding transfer asymmetry
+## PCA interpretation
 
-Llama → Gemma and Gemma → Llama can behave differently. Report both directions; do not replace them with one pooled or averaged score.
-
-## Tuning on the target domain
-
-Do not select features, thresholds, hyperparameters, or preprocessing after seeing the held-out task type or target-family results. The fixed pipeline must be fitted using training-domain data only.
-
-## Silent retries
-
-Never overwrite a failed generation. Record it and create a new `run_id` for any retry.
+PCA axes are weighted combinations of scaled features. Inspect loadings and explained variance. Visual separation is exploratory evidence only.
 
 ## Post-hoc feature fishing
 
-Features selected after viewing test performance require confirmation on fresh data and must be labeled exploratory.
+Features selected after seeing held-out performance are exploratory and require confirmation on fresh data.
+
+## Silent retries
+
+Never overwrite a failed generation. Keep it and create a new run_id for any retry.

@@ -1,79 +1,81 @@
-# Generalising Linguistic Fingerprints across LLM Families and Genres
+# Interpretable Linguistic Fingerprints of LLM Versions
 
-A controlled corpus-linguistic study of whether interpretable predecessor-successor differences transfer across open-weight model families and unseen writing-task types.
+A controlled course project comparing earlier and later open-weight LLM versions with matched prompts and interpretable linguistic features.
 
-## Research question and gap
+## Research question
 
-> To what extent do linguistically interpretable predecessor-successor differences generalise across open-weight model families and text genres?
+> Can earlier and later versions within the Llama and Gemma families be distinguished using a small set of interpretable linguistic features, and how robust is this distinction across unseen prompts and writing-task types?
 
-Prior work already shows that LLM versions can be distinguished. Most notably, Przystalski et al. compare Llama 2 and Llama 3 under matched prompts with interpretable stylometric features and topic-grouped cross-validation. The novelty claim is therefore **not** that this project is the first controlled comparison of earlier and later versions.
+Prior studies already show that generated text can reveal its source model or version. This repository therefore frames the project as a controlled replication and robustness study, not as the discovery of a universal cross-family fingerprint.
 
-The narrower gap is whether an earlier-to-later contrast learned in one open-weight family transfers to another family and remains detectable when an entire writing-task type is unseen during training. The project asks:
+The project has three focused goals:
 
-1. Which of the 30 prespecified linguistic features change from Llama 2 to Llama 3.1 and from Gemma 2 to Gemma 3?
-2. Do the directions of those changes agree across the two families?
-3. Do classifiers retain signal on a held-out writing-task type?
-4. Does an earlier-versus-later classifier trained on Llama transfer to Gemma, and vice versa?
-5. Does cross-family transfer survive the stricter condition in which target prompts are also unseen?
+1. measure paired earlier-to-later feature differences inside Llama and Gemma;
+2. test simple within-family version classification on unseen prompts;
+3. test whether performance survives a completely unseen writing-task type.
 
-The scientific outcome is the generalisation pattern, not classification accuracy by itself. Failure to transfer is informative evidence that the measured differences are family- or version-specific fingerprints rather than a shared generation-associated shift.
+Cross-family classifier transfer, mixed-effects models, and clustering are not part of the confirmatory proposal.
 
 ## Planned design
 
 | Dimension | Planned value |
 |---|---|
-| Model comparison | Llama 2 7B Chat → Llama 3.1 8B Instruct; Gemma 2 9B IT → Gemma 3 12B IT |
+| Models | Llama 2 7B Chat → Llama 3.1 8B Instruct; Gemma 2 9B IT → Gemma 3 12B IT |
 | Language | English |
-| Prompt bank | 100 prompts; 20 in each of five writing-task types |
-| Pairing | Every model receives every registered prompt |
-| Output length | 120–150 requested words; actual length audited and controlled in sensitivity analyses |
+| Prompt bank | 100 prompts; 20 per writing-task type |
+| Pairing | Every model receives every prompt |
+| Output length | 120–150 requested words; actual length audited |
 | Sampling | One deterministic response per prompt/model; seed 42 |
-| Features | 30 prespecified, interpretable linguistic measures |
-| Supporting analysis | Paired earlier-to-later feature contrasts within each family |
-| Cross-genre analysis | Leave one writing-task type out, separately by family |
-| Cross-family analysis | Llama → Gemma and Gemma → Llama transfer |
-| Strict robustness test | Cross-family transfer with target `prompt_id` values withheld from training |
-| Baseline | Prompt-blocked within-family L2 logistic regression and dummy classifier |
+| Confirmatory features | 15 interpretable linguistic measures |
+| Linguistic analysis | Paired later-minus-earlier contrasts within each family |
+| Primary prediction | Prompt-blocked five-fold L2 logistic regression |
+| Robustness | Leave one complete writing-task type out |
+| Optional exploration | Scaled PCA |
 
-The proposal-level design and exact Ollama tags are recorded in [config/study.yaml](config/study.yaml) and [config/models.yaml](config/models.yaml). They become the main-run freeze only after all four models have been installed and the pilot has passed its documented quality gates.
+Exact models and settings are recorded in config/models.yaml and config/study.yaml. The main-run freeze occurs only after approval and a successful pilot.
 
-## Non-negotiable validity rules
+## Why this scope fits the course
 
-- The same registered prompt text, system instruction, decoding settings, and requested length are used for every model.
-- Raw generations are immutable and retain exact model/runtime provenance.
-- Feature scaling and imputation are fitted on training data only.
-- Ordinary predictive evaluation groups by `prompt_id`; cross-genre evaluation holds out the complete writing-task type.
-- Cross-family results are reported in both directions and never replaced by a pooled score.
-- Length is measured rather than assumed to be controlled by a prompt instruction. Results include a length-aware sensitivity analysis.
-- Family-specific feature contrasts are reported before any cross-family interpretation.
-- Claims are associations with the selected model versions, not effects caused by model age or training recency.
-- With only two families, transfer is evidence about these pairs, not a universal trend among newer LLMs.
+The design uses methods covered in the course: linguistic preprocessing, pandas aggregation, hypothesis testing, bootstrap uncertainty, logistic regression, cross-validation, classification metrics, and optional PCA. Prompt grouping and leave-one-task-type-out are leakage-safe adaptations of cross-validation. A mixed model is not required.
 
-See [AGENTS.md](AGENTS.md) for operational rules and [PROJECT_PLAN.md](PROJECT_PLAN.md) for the complete analysis design.
+The contribution can be a replication, a robustness result, or a well-supported null result. It does not depend on proving a previously unknown universal law.
+
+## Validity rules
+
+- Use the same registered prompt and generation configuration for every model.
+- Keep raw generations immutable and preserve exact provenance.
+- Pair earlier and later outputs by prompt inside each family.
+- Keep every prompt_id in one cross-validation fold.
+- Fit imputation and scaling on training data only.
+- Report a dummy baseline, balanced accuracy, macro-F1, fold results, and confusion matrices.
+- Audit actual length and run a length-aware sensitivity analysis.
+- Report family-specific results and avoid causal claims about model age.
+
+See AGENTS.md for operational rules and PROJECT_PLAN.md for the full design.
 
 ## Repository map
 
-```text
-AGENTS.md                    instructions and scientific guardrails
-PROJECT_PLAN.md              research design, estimands, and decision gates
-proposal/                    course proposal and submission checklist
-config/                      study, evaluation, and exact model configuration
-prompts/                     pilot prompts and final prompt registry
-data/raw/                    immutable model outputs (not committed by default)
-data/interim/                validated and reshaped data
-data/processed/              extracted feature matrices
-src/linguistic_fingerprints/ validation, features, and generalisation protocols
+~~~text
+AGENTS.md                    project rules and scientific guardrails
+PROJECT_PLAN.md              research design and decision gates
+proposal/                    English proposal and checklist
+config/                      study and exact model configuration
+prompts/                     pilot and final prompt registries
+data/raw/                    immutable model outputs
+data/interim/                validated intermediate data
+data/processed/              extracted feature tables
+src/linguistic_fingerprints/ features and evaluation functions
 scripts/                     command-line entry points
-notebooks/                   numbered analysis narrative
-reports/                     status, run log, and known pitfalls
-literature/                  verified literature map and BibTeX
+notebooks/                   planned analysis narrative
+reports/                     status, decisions, and known pitfalls
+literature/                  verified literature and BibTeX
 llm_corpus/                  searchable course extracts
 tests/                       automated checks
-```
+~~~
 
 ## Quick start
 
-```bash
+~~~bash
 python -m venv .venv
 source .venv/bin/activate
 python -m pip install -r requirements.txt
@@ -81,31 +83,27 @@ python -m pip install .
 python -m spacy download en_core_web_sm
 python scripts/check_project.py
 python -m pytest
-```
+~~~
 
-After generation data follows the schema in [data/README.md](data/README.md):
+After generation data follows data/README.md:
 
-```bash
-python scripts/extract_features.py \
-  --input data/raw/generations.csv \
-  --output data/processed/features.csv
+~~~bash
+python scripts/extract_features.py   --input data/raw/generations.csv   --output data/processed/features.csv
 
-python scripts/evaluate_generalization.py \
-  --input data/processed/features.csv \
-  --output reports/generalization_results.csv
-```
+python scripts/evaluate_generalization.py   --input data/processed/features.csv   --output reports/evaluation_results.csv
+~~~
 
-The second command produces logistic-regression and stratified-dummy results for leave-one-task-type-out evaluation, direct cross-family transfer, cross-family transfer to unseen prompts, and the prompt-blocked within-family baseline. Every protocol runs once with the 30 confirmatory features and once with actual word count added as a length-sensitivity covariate. Confidence intervals and the post-pilot length-matched sensitivity analysis remain part of the report/notebook layer and must follow `PROJECT_PLAN.md`.
+The evaluation command produces prompt-blocked within-family and leave-one-task-type-out results with the 15 confirmatory features, plus a length-covariate sensitivity variant.
 
 ## Current status
 
-The research question, literature positioning, configurations, and evaluation code have been updated for cross-genre and cross-family generalisation. Before the main run:
+The proposal and repository have been simplified to the course-aligned scope. Before the main run:
 
-- obtain supervisor approval for the reframed objective;
-- install and verify the four exact model manifests;
+- obtain supervisor approval;
+- install and verify the four exact models;
 - complete and review the 100-prompt registry;
-- run the pilot and audit length, refusals, formatting, and annotations;
-- confirm that every writing-task type has enough valid paired responses for held-out evaluation;
+- run the four-model pilot;
+- audit length, failures, formatting, provenance, and annotations;
 - record the post-pilot analysis freeze.
 
-The remaining human decisions are tracked in [proposal/PROPOSAL_CHECKLIST.md](proposal/PROPOSAL_CHECKLIST.md).
+Open decisions are tracked in proposal/PROPOSAL_CHECKLIST.md.

@@ -1,11 +1,12 @@
 # LLM entry point
 
-Primary instructions: `AGENTS.md`
-Research design: `PROJECT_PLAN.md`
-Live checklist: `reports/PREP_STATUS.md`
-Run history: `reports/CHANGELOG_RUNS.md`
-Known pitfalls: `reports/MISTAKES.md`
-Course corpus: `llm_corpus/INDEX.md`
+Primary instructions: AGENTS.md
+Research design: PROJECT_PLAN.md
+Live checklist: reports/PREP_STATUS.md
+Run history: reports/CHANGELOG_RUNS.md
+Known pitfalls: reports/MISTAKES.md
+Course corpus: llm_corpus/INDEX.md
 
-Core rule: all models receive identical prompts. Ordinary CV is grouped by `prompt_id`; cross-genre evaluation withholds a complete `task_type`; cross-family transfer is run in both directions and includes an unseen-prompt robustness test.
-Core claim limit: results concern transfer between the selected version pairs and genres, not a universal LLM generation effect.
+Core rule: all models receive identical prompts. Feature inference is paired by prompt and family. Ordinary classification groups by prompt_id; the robustness analysis withholds a complete task_type.
+Core scope: 15 confirmatory features, paired comparisons, prompt-blocked logistic regression, leave-one-task-type-out, length sensitivity, and optional PCA.
+Out of scope: mixed-effects models, cross-family classifier transfer, required clustering, and universal claims about model generations.

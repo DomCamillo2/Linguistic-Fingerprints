@@ -60,7 +60,6 @@ AUDIT_FEATURES = (
 
 CONFIRMATORY_FEATURES = (
     "n_sentences",
-    "n_paragraphs",
     "mean_word_chars",
     "mean_sentence_words",
     "sd_sentence_words",
@@ -70,13 +69,11 @@ CONFIRMATORY_FEATURES = (
     "function_word_prop",
     "modal_prop",
     "connective_prop",
-    "sentence_initial_connective_prop",
     "punctuation_prop",
-    "apostrophe_word_prop",
-    "list_line_prop",
-    "heading_line_prop",
     "adjacent_sentence_lexical_overlap",
-    *(f"upos_{tag}_prop" for tag in UPOS_TAGS),
+    "upos_ADJ_prop",
+    "upos_NOUN_prop",
+    "upos_VERB_prop",
 )
 
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run the preregistered cross-genre and cross-family evaluations."""
+"""Run the course-aligned unseen-prompt and held-out-task evaluations."""
 
 from __future__ import annotations
 
@@ -10,8 +10,6 @@ import pandas as pd
 
 from linguistic_fingerprints.features import CONFIRMATORY_FEATURES
 from linguistic_fingerprints.generalization import (
-    cross_family_transfer,
-    cross_family_unseen_prompt,
     leave_one_task_type_out,
     prompt_blocked_within_family,
     validate_analysis_frame,
@@ -49,14 +47,10 @@ def main() -> None:
             )
         variant_results = pd.concat(
             [
-                leave_one_task_type_out(frame, variant_features, seed=args.seed),
-                cross_family_transfer(frame, variant_features, seed=args.seed),
-                cross_family_unseen_prompt(
-                    frame, variant_features, n_splits=args.folds, seed=args.seed
-                ),
                 prompt_blocked_within_family(
                     frame, variant_features, n_splits=args.folds, seed=args.seed
                 ),
+                leave_one_task_type_out(frame, variant_features, seed=args.seed),
             ],
             ignore_index=True,
         )
@@ -66,7 +60,7 @@ def main() -> None:
     results = pd.concat(outputs, ignore_index=True)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     results.to_csv(args.output, index=False)
-    print(f"wrote {len(results)} generalization results to {args.output}")
+    print(f"wrote {len(results)} course-aligned evaluation results to {args.output}")
 
 
 if __name__ == "__main__":

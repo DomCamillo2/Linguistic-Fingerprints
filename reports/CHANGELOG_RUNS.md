@@ -29,3 +29,15 @@ Append entries; never erase history.
 - Added the stricter cross-family/unseen-prompt robustness protocol and required length-aware sensitivity analyses.
 - Added reusable evaluation code, a CLI, and automated tests. No model outputs or empirical study results were created.
 - Main-run status remains **not started** pending supervisor approval, installation, full prompt-bank review, pilot, and final freeze.
+
+## 2026-08-31 — course-aligned scope reduction
+
+- Revised the English proposal after reviewing the course project guidance, especially the expected scope and the value of replication on new data.
+- Reframed the contribution as a controlled replication and robustness study rather than a claim of a new universal cross-family fingerprint.
+- Retained four exact models, 100 matched English prompts, five task types, and deterministic local generation.
+- Reduced the confirmatory inventory from 30 to 15 interpretable features.
+- Made paired within-family contrasts and prompt-blocked logistic regression the primary analyses.
+- Retained leave-one-task-type-out evaluation as the single robustness extension.
+- Removed mixed-effects modelling, cross-family classifier transfer, clustering, permutation testing, and false-discovery-rate procedures from the confirmatory plan.
+- Updated the default evaluation command to run only the two course-aligned classification protocols. Reusable cross-family helper functions remain in the codebase for explicitly labelled future or exploratory work.
+- No models were downloaded and no generations or empirical analyses were run. The main run remains blocked on supervisor approval, model installation, prompt-bank completion, and the four-model pilot.

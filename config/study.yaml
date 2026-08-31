@@ -1,8 +1,11 @@
-project_title: Generalising Linguistic Fingerprints across LLM Families and Genres
-design_status: reframed_pending_supervisor_and_pilot
+project_title: >-
+  Interpretable Linguistic Fingerprints of Earlier and Later Open-Weight
+  LLM Versions: A Controlled Replication across Writing Tasks
+design_status: simplified_pending_supervisor_and_pilot
 primary_question: >-
-  To what extent do linguistically interpretable predecessor-successor
-  differences generalise across open-weight model families and text genres?
+  Can earlier and later versions within the Llama and Gemma families be
+  distinguished using a small set of interpretable linguistic features, and
+  how robust is this distinction across unseen prompts and writing-task types?
 language: en
 prompt_count: 100
 task_types:
@@ -40,7 +43,23 @@ pilot:
   maximum_model_refusal_or_format_failure: 0.10
 
 features:
-  confirmatory_count: 30
+  confirmatory_count: 15
+  confirmatory:
+    - n_sentences
+    - mean_word_chars
+    - mean_sentence_words
+    - sd_sentence_words
+    - mattr_50
+    - repeated_token_rate
+    - repeated_bigram_rate
+    - function_word_prop
+    - modal_prop
+    - connective_prop
+    - punctuation_prop
+    - adjacent_sentence_lexical_overlap
+    - upos_ADJ_prop
+    - upos_NOUN_prop
+    - upos_VERB_prop
   mattr_window: 50
   manual_audit_fraction: 0.10
   audit_only:
@@ -51,48 +70,35 @@ features:
 inference:
   unit: prompt_id
   contrast: later_minus_earlier_within_family
+  report_separately_by_family: true
   bootstrap_repetitions: 10000
-  permutation_sidedness: two_sided
-  multiple_testing: benjamini_hochberg
-  fdr_q: 0.05
-  cross_family_direction_summary: prespecified_feature_sign_concordance
+  paired_test: paired_t_test
+  multiple_testing: bonferroni
+  alpha: 0.05
   universal_generation_claim_allowed: false
 
 classification:
   estimator: logistic_regression_l2
   C: 1.0
-  cv: StratifiedGroupKFold
   cv_folds: 5
   grouping_key: prompt_id
   baseline: stratified_dummy
   protocols:
-    within_family_baseline:
-      role: supporting
+    within_family_prompt_blocked:
+      role: primary
       split: stratified_group_k_fold
       report_separately_by_family: true
-    cross_genre:
-      role: primary
-      split: leave_one_task_type_out
+    leave_one_task_type_out:
+      role: robustness
       train_task_types: 4
       test_task_types: 1
       report_separately_by_family: true
-    cross_family:
-      role: primary
-      directions:
-        - llama_to_gemma
-        - gemma_to_llama
-      matched_prompt_bank: true
-    cross_family_unseen_prompt:
-      role: robustness
-      split: stratified_group_k_fold
-      grouping_key: prompt_id
-      directions:
-        - llama_to_gemma
-        - gemma_to_llama
   primary_metrics:
     - balanced_accuracy
     - macro_f1
-    - roc_auc
+  supporting_outputs:
+    - fold_scores
+    - confusion_matrix
 
 length_sensitivity:
   required: true
@@ -101,6 +107,12 @@ length_sensitivity:
     - add_n_words_as_covariate
     - preregistered_length_matched_subset
   silent_truncation_allowed: false
+
+exploration:
+  pca: optional
+  clustering: out_of_scope
+  mixed_effects: out_of_scope
+  cross_family_transfer: out_of_scope
 
 proposal:
   due: 2026-08-31

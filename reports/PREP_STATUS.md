@@ -1,39 +1,38 @@
 # Preparation status
 
-Last updated: 2026-08-27
+Last updated: 2026-08-31
 
 ## Completed
 
-- [x] New public GitHub repository created by the project owner.
-- [x] Research question and cautious claim scope defined.
-- [x] Matched-family earlier/later design documented.
-- [x] LLM/coding-agent instructions added.
-- [x] Proposal draft scaffolded around the course requirements.
-- [x] Data contract, configuration templates, and pilot prompt registry added.
-- [x] Searchable course lecture/assignment Markdown copied into the repository.
-- [x] Initial feature extraction and schema validation code added.
-- [x] Basic tests and CI configuration added.
+- [x] Public repository and reproducible project structure created.
+- [x] Searchable course lecture and assignment Markdown added without publishing the original PDFs.
 - [x] Preliminary literature review completed with verified primary sources.
-- [x] Closest prior study identified and replication/extension gap defined.
-- [x] Two matched families and four exact proposal-level Ollama tags selected.
-- [x] English, 100 prompts, 120–150 words, and one deterministic response per cell selected.
-- [x] Thirty confirmatory features and the primary inferential/classification procedures specified.
-- [x] Local feasibility checked on a 24-GB Apple M4 Pro; public Ollama manifests recorded.
-- [x] Research objective reframed from simple version separability to cross-genre and bidirectional cross-family generalisation.
-- [x] Przystalski et al. added as the closest matched-prompt Llama 2/3 precedent; first-study novelty claims removed.
-- [x] Leave-one-task-type-out, cross-family transfer, and cross-family/unseen-prompt evaluation code and tests added.
+- [x] Closest matched-prompt Llama 2/3 precedent identified.
+- [x] Exact Llama and Gemma model pairs selected.
+- [x] English, 100 prompts, five task types, 120–150 words, and deterministic generation selected.
+- [x] Proposal scope reviewed against the course project guidance.
+- [x] English proposal reframed as controlled replication plus task-type robustness.
+- [x] Confirmatory inventory reduced from 30 to 15 features.
+- [x] Mixed models, cross-family transfer, and required clustering removed from the confirmatory plan.
+- [x] Default evaluation command aligned with prompt-blocked and leave-one-task-type-out analysis.
+- [x] Data contract, pilot registry, extraction code, tests, and CI scaffolding added.
 
-## Must be completed before the proposal/main run
+## Required before submission or supervisor sign-off
 
-- [ ] Get supervisor approval for the narrower cross-family/cross-genre topic.
-- [ ] Install all four exact model tags and capture full local runtime digests.
+- [ ] Both contributors confirm the title, division of work, and timeline.
+- [ ] Confirm required proposal format, length, and cover metadata.
+- [ ] Obtain supervisor approval for the simplified replication-and-robustness design.
+
+## Required before the main run
+
+- [ ] Install all four exact model tags and capture local runtime digests.
 - [ ] Complete and review the 100-prompt bank.
 - [ ] Run the 20-prompt pilot across all four models.
-- [ ] Audit length compliance, failures, refusals, and metadata.
-- [ ] Confirm enough valid paired responses in every task type for held-out evaluation.
+- [ ] Audit length compliance, failures, refusals, formatting, provenance, and annotations.
+- [ ] Confirm enough valid paired responses in every task type.
 - [ ] Preregister the exact length-matched sensitivity rule.
-- [ ] Confirm or revise the proposal-level configuration after the pilot and record the main-run freeze.
+- [ ] Record the post-pilot analysis freeze.
 
 ## Current bottleneck
 
-Supervisor approval of the reframed incremental contribution and the four-model pilot are the current gates. The exact public model tags are selected, but the approximately 23-GB download and local manifest verification have not been performed. The main corpus must not be generated until the complete prompt bank is reviewed, task-type coverage is confirmed, and the pilot passes.
+Supervisor approval and the four-model pilot are the current gates. No main corpus has been generated. Reusable cross-family evaluation functions remain in the repository, but they are explicitly outside the current proposal and default analysis.
